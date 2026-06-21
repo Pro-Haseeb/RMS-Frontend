@@ -129,7 +129,7 @@ export default function CandidateDashboard() {
   return (
     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
       <Box sx={{ color: "white", maxWidth: 1200, mx: "auto" }}>
-        <Typography variant="h4" fontWeight="800" sx={{ mb: 1, letterSpacing: "-0.5px" }}>
+        <Typography variant="h4" fontWeight="800" sx={{ mb: 1, letterSpacing: "-0.5px", fontSize: { xs: '1.75rem', md: '2.125rem' } }}>
           Welcome back, {user.name || "Candidate"}!
         </Typography>
         <Typography sx={{ color: "#94a3b8", mb: 4 }}>
@@ -164,7 +164,7 @@ export default function CandidateDashboard() {
                       {stat.title}
                     </Typography>
                   </Box>
-                  <Typography variant="h3" fontWeight="800" sx={{ color: stat.color }}>
+                  <Typography variant="h3" fontWeight="800" sx={{ color: stat.color, fontSize: { xs: '2rem', md: '3rem' } }}>
                     {stat.value}
                   </Typography>
                 </GlassCard>

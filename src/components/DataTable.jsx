@@ -43,8 +43,8 @@ export default function DataTable({
       </Box>
 
       {/* TABLE */}
-      <TableContainer>
-        <Table>
+      <TableContainer sx={{ overflowX: "auto" }}>
+        <Table sx={{ minWidth: 600 }}>
 
           {/* HEAD */}
           <TableHead>

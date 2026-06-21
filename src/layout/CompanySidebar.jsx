@@ -5,7 +5,8 @@ import {
   ListItemText,
   Box,
   Typography,
-  IconButton
+  IconButton,
+  useMediaQuery
 } from "@mui/material";
 import { useNavigate, useLocation } from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
@@ -13,6 +14,7 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 export default function CompanySidebar({ open, onClose }) {
   const navigate = useNavigate();
   const location = useLocation();
+  const isMobile = useMediaQuery("(max-width:960px)");
 
   // Get user role
   let role = "";
@@ -46,7 +48,12 @@ export default function CompanySidebar({ open, onClose }) {
 
   return (
     <Drawer
-      variant="permanent"
+      variant={isMobile ? "temporary" : "permanent"}
+      open={isMobile ? open : true}
+      onClose={onClose}
+      ModalProps={{
+        keepMounted: true, // Better open performance on mobile.
+      }}
       sx={{
         "& .MuiDrawer-paper": {
           width: 240,

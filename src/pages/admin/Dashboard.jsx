@@ -162,6 +162,7 @@ export default function Dashboard() {
           variant="h4"
           fontWeight="800"
           sx={{
+            fontSize: { xs: '1.75rem', md: '2.125rem' },
             background: "linear-gradient(90deg, #fff 60%, #93c5fd)",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
@@ -240,7 +241,7 @@ export default function Dashboard() {
                   ) : (
                     <Typography
                       sx={{
-                        fontSize: "30px",
+                        fontSize: { xs: '24px', md: '30px' },
                         fontWeight: "800",
                         color: "#fff",
                         lineHeight: 1,

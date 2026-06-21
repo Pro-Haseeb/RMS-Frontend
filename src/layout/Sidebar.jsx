@@ -6,7 +6,8 @@ import {
   ListItemIcon,
   Box,
   Typography,
-  IconButton
+  IconButton,
+  useMediaQuery
 } from "@mui/material";
 import { useNavigate, useLocation } from "react-router-dom";
 import DashboardIcon from "@mui/icons-material/Dashboard";
@@ -27,13 +28,19 @@ const menu = [
   { name: "Back to Home", path: "/", icon: <ArrowBackIcon /> }
 ];
 
-export default function Sidebar({ open, onClose }) {
+export default function Sidebar({ mobileOpen, onClose }) {
   const navigate = useNavigate();
   const location = useLocation();
+  const isMobile = useMediaQuery("(max-width:960px)");
 
   return (
     <Drawer
-      variant="permanent"
+      variant={isMobile ? "temporary" : "permanent"}
+      open={isMobile ? mobileOpen : true}
+      onClose={onClose}
+      ModalProps={{
+        keepMounted: true, // Better open performance on mobile.
+      }}
       sx={{
         "& .MuiDrawer-paper": {
           width: 240,

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Box, Toolbar } from "@mui/material";
 import Sidebar from "./Sidebar";
 import Navbar from "./Navbar";
@@ -6,6 +7,12 @@ import { Outlet } from "react-router-dom";
 const SIDEBAR_WIDTH = 240;
 
 export default function MainLayout() {
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen);
+  };
+
   return (
     <Box
       sx={{
@@ -15,13 +22,13 @@ export default function MainLayout() {
       }}
     >
       {/* FIXED SIDEBAR */}
-      <Sidebar />
+      <Sidebar mobileOpen={mobileOpen} onClose={handleDrawerToggle} />
 
       {/* MAIN CONTENT AREA */}
       <Box
         sx={{
           flexGrow: 1,
-          ml: `${SIDEBAR_WIDTH}px`,
+          ml: { xs: 0, md: `${SIDEBAR_WIDTH}px` },
           display: "flex",
           flexDirection: "column",
           minHeight: "100vh",
@@ -29,7 +36,7 @@ export default function MainLayout() {
         }}
       >
         {/* NAVBAR */}
-        <Navbar hasSidebar />
+        <Navbar hasSidebar onDrawerToggle={handleDrawerToggle} />
         <Toolbar sx={{ flexShrink: 0 }} />
 
         {/* PAGE CONTENT */}

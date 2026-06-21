@@ -188,7 +188,7 @@ export default function CompanyDashboard() {
         {/* HEADER */}
         <Box sx={{ mb: 4, display: "flex", justifyContent: "space-between", alignItems: "flex-end" }}>
           <Box>
-            <Typography variant="h4" fontWeight="800" sx={{ mb: 1, letterSpacing: "-0.5px" }}>
+            <Typography variant="h4" fontWeight="800" sx={{ mb: 1, letterSpacing: "-0.5px", fontSize: { xs: '1.75rem', md: '2.125rem' } }}>
               Company Dashboard
             </Typography>
             <Typography sx={{ color: "#94a3b8" }}>
@@ -231,7 +231,7 @@ export default function CompanyDashboard() {
                 {loading ? (
                   <Skeleton variant="text" width={40} height={36} sx={{ bgcolor: "rgba(255,255,255,0.05)" }} />
                 ) : (
-                  <Typography variant="h4" fontWeight="800" sx={{ color: "#fff", mb: 0.5 }}>
+                  <Typography variant="h4" fontWeight="800" sx={{ color: "#fff", mb: 0.5, fontSize: { xs: '2rem', md: '2.125rem' } }}>
                     {s.value}
                   </Typography>
                 )}
@@ -276,8 +276,8 @@ export default function CompanyDashboard() {
                   <Typography sx={{ color: "#64748b" }}>No applications received yet.</Typography>
                 </Box>
               ) : (
-                <TableContainer>
-                  <Table sx={{ tableLayout: "fixed", minWidth: 0 }}>
+                <TableContainer sx={{ overflowX: 'auto' }}>
+                  <Table sx={{ tableLayout: "fixed", minWidth: 600 }}>
                     <TableHead>
                       <TableRow>
                         <TableCell sx={{ ...thStyle, width: "35%" }}>Candidate</TableCell>

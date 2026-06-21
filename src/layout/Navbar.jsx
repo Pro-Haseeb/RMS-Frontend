@@ -42,7 +42,7 @@ function getDisplayName(user) {
   return "Guest";
 }
 
-export default function Navbar({ hasSidebar = false, sidebarWidth = drawerWidth }) {
+export default function Navbar({ hasSidebar = false, sidebarWidth = drawerWidth, onDrawerToggle }) {
   const navigate = useNavigate();
   const location = useLocation();
   const [user, setUser] = useState(loadUser());
@@ -158,8 +158,8 @@ export default function Navbar({ hasSidebar = false, sidebarWidth = drawerWidth 
         position="fixed"
         elevation={0}
         sx={{
-          left: hasSidebar ? `${sidebarWidth}px` : 0,
-          width: hasSidebar ? `calc(100% - ${sidebarWidth}px)` : "100%",
+          left: hasSidebar ? { xs: 0, md: `${sidebarWidth}px` } : 0,
+          width: hasSidebar ? { xs: "100%", md: `calc(100% - ${sidebarWidth}px)` } : "100%",
           background: "rgba(7, 12, 27, 0.94)",
           backdropFilter: "blur(18px)",
           borderBottom: "1px solid rgba(148,163,184,0.16)",
@@ -170,8 +170,14 @@ export default function Navbar({ hasSidebar = false, sidebarWidth = drawerWidth 
         <Toolbar sx={{ minHeight: 78, px: { xs: 2, md: 4 }, gap: 2, display: "flex", justifyContent: "space-between" }}>
           {hasSidebar ? (
             <>
-              {/* Left spacer to perfectly center the title against the right side content */}
-              <Box sx={{ width: { xs: 40, md: 180 } }} />
+              {/* Left spacer or Hamburger menu */}
+              <Box sx={{ width: { xs: 40, md: 180 }, display: "flex", alignItems: "center" }}>
+                {isMobile && onDrawerToggle && (
+                  <IconButton onClick={onDrawerToggle} sx={{ color: "#cbd5e1", ml: -1 }}>
+                    <MenuIcon />
+                  </IconButton>
+                )}
+              </Box>
 
               {/* CENTERED DASHBOARD TITLE */}
               <Typography

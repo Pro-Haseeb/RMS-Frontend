@@ -193,7 +193,7 @@ export default function RequestDemo() {
               AI-Powered Platform
             </Typography>
 
-            <Typography variant="h3" fontWeight="bold">
+            <Typography variant="h3" fontWeight="bold" sx={{ fontSize: { xs: '2rem', md: '3rem' } }}>
               Request a Demo
             </Typography>
 
@@ -357,13 +357,14 @@ export default function RequestDemo() {
                 textAlign="center"
                 sx={{
                   mb: 5,
+                  fontSize: { xs: '1.5rem', md: '2rem' },
                   color: "#fff",
                   letterSpacing: "1px",
                   textShadow: "0 0 12px rgba(255,255,255,0.25)"
                 }}
               >
                 Company Details
-              </Typography>s
+              </Typography>
 
               <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
 
