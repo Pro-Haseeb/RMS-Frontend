@@ -6,7 +6,8 @@ import {
   Box,
   Typography,
   IconButton,
-  useMediaQuery
+  useMediaQuery,
+  useTheme
 } from "@mui/material";
 import { useNavigate, useLocation } from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
@@ -14,7 +15,8 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 export default function CandidateSidebar({ open, onClose }) {
   const navigate = useNavigate();
   const location = useLocation();
-  const isMobile = useMediaQuery("(max-width:960px)");
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
   const menu = [
     { name: "Dashboard", path: "/candidate" },

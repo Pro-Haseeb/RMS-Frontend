@@ -11,7 +11,8 @@ import {
   MenuItem,
   Divider,
   Badge,
-  useMediaQuery
+  useMediaQuery,
+  useTheme
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import NotificationsIcon from "@mui/icons-material/Notifications";
@@ -48,7 +49,8 @@ export default function Navbar({ hasSidebar = false, sidebarWidth = drawerWidth,
   const [user, setUser] = useState(loadUser());
   const [mobileAnchor, setMobileAnchor] = useState(null);
   const [profileAnchor, setProfileAnchor] = useState(null);
-  const isMobile = useMediaQuery("(max-width:960px)");
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
   useEffect(() => {
     setUser(loadUser());

@@ -158,11 +158,12 @@ export default function AuthPage() {
       <Navbar />
       <Box
         sx={{
-          height: "100vh",
-          width: "100vw",
+          minHeight: "100vh",
+          width: "100%",
           display: "flex",
           flexDirection: { xs: "column", md: "row" },
-          overflow: "hidden",
+          overflowX: "hidden",
+          overflowY: "auto",
           bgcolor: "#020617",
           fontFamily: "'Inter', sans-serif"
         }}

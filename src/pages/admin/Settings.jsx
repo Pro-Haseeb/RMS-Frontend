@@ -6,19 +6,12 @@ import {
   Paper
 } from "@mui/material";
 
-const drawerWidth = 240;
-
 export default function Settings() {
   return (
     <Box
       sx={{
-        position: "fixed",
-        top: "64px",
-        left: `${drawerWidth}px`,
-        right: 0,
-        bottom: 0,
-
-        p: 4,
+        p: { xs: 2, sm: 3, md: 4 },
+        minHeight: "100%",
 
         // 🔥 RECRUITAI PREMIUM THEME
         background: `

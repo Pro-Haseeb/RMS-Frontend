@@ -666,7 +666,7 @@ export default function Export() {
               </Typography>
             </Box>
           ) : (
-            <TableContainer component={Paper} sx={{ backgroundColor: "transparent" }}>
+            <TableContainer component={Paper} sx={{ backgroundColor: "transparent", overflowX: "auto" }}>
               <Table>
                 <TableHead>
                   <TableRow>

@@ -322,9 +322,10 @@ export default function Applications() {
                 sx={{
                   background: "transparent",
                   boxShadow: "none",
+                  overflowX: "auto",
                 }}
               >
-                <Table sx={{ tableLayout: "fixed", minWidth: 0 }}>
+                <Table sx={{ minWidth: 600 }}>
                   <TableHead>
                     <TableRow>
                       <TableCell sx={{ ...thStyle, width: "22%" }}>Candidate</TableCell>

@@ -1,4 +1,4 @@
-﻿import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   AppBar,
   Toolbar,
@@ -139,6 +139,8 @@ export default function JobsPage() {
             sx={{
               mt: 6,
               display: "flex",
+              flexDirection: { xs: "column", sm: "row" },
+              flexWrap: "wrap",
               background: "rgba(255,255,255,0.08)",
               backdropFilter: "blur(18px)",
               borderRadius: 5,
@@ -155,7 +157,7 @@ export default function JobsPage() {
               placeholder="Search jobs..."
               onChange={(e) => setSearch(e.target.value)}
               InputProps={{ disableUnderline: true, sx: { color: "white" } }}
-              sx={{ input: { color: "#fff" } }}
+              sx={{ input: { color: "#fff" }, flex: 1, minWidth: { xs: "100%", sm: 0 } }}
             />
             <TextField
               select
@@ -163,7 +165,7 @@ export default function JobsPage() {
               value={location}
               onChange={(e) => setLocation(e.target.value)}
               InputProps={{ disableUnderline: true, sx: { color: "white" } }}
-              sx={{ minWidth: 130, "& .MuiSelect-select": { color: "#fff" } }}
+              sx={{ minWidth: { xs: "100%", sm: 130 }, "& .MuiSelect-select": { color: "#fff" } }}
             >
               <MenuItem value="Any">All Location</MenuItem>
               <MenuItem value="San Francisco">San Francisco</MenuItem>
@@ -176,14 +178,14 @@ export default function JobsPage() {
               value={experience}
               onChange={(e) => setExperience(e.target.value)}
               InputProps={{ disableUnderline: true, sx: { color: "white" } }}
-              sx={{ minWidth: 120, "& .MuiSelect-select": { color: "#fff" } }}
+              sx={{ minWidth: { xs: "100%", sm: 120 }, "& .MuiSelect-select": { color: "#fff" } }}
             >
               <MenuItem value="Any">Any Level</MenuItem>
               <MenuItem value="Entry">Entry</MenuItem>
               <MenuItem value="Mid">Mid</MenuItem>
               <MenuItem value="Senior">Senior</MenuItem>
             </TextField>
-            <Button variant="contained" sx={{ borderRadius: "12px", px: 4, background: "linear-gradient(135deg,#1976d2,#42a5f5)" }}>
+            <Button variant="contained" sx={{ borderRadius: "12px", px: 4, background: "linear-gradient(135deg,#1976d2,#42a5f5)", width: { xs: "100%", sm: "auto" } }}>
               Search
             </Button>
           </Box>

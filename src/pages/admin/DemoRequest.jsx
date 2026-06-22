@@ -355,8 +355,8 @@ export default function DemoRequests() {
               backdropFilter: "blur(16px)",
             }}
           >
-            <TableContainer>
-              <Table sx={{ tableLayout: "fixed", minWidth: 0 }}>
+            <TableContainer sx={{ overflowX: "auto" }}>
+              <Table sx={{ minWidth: 650 }}>
                 <TableHead>
                   <TableRow sx={{ background: "rgba(255,255,255,0.02)" }}>
                     <TableCell sx={{ ...thStyle, width: "22%" }}>Company</TableCell>

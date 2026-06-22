@@ -7,7 +7,8 @@ import {
   Box,
   Typography,
   IconButton,
-  useMediaQuery
+  useMediaQuery,
+  useTheme
 } from "@mui/material";
 import { useNavigate, useLocation } from "react-router-dom";
 import DashboardIcon from "@mui/icons-material/Dashboard";
@@ -31,7 +32,8 @@ const menu = [
 export default function Sidebar({ mobileOpen, onClose }) {
   const navigate = useNavigate();
   const location = useLocation();
-  const isMobile = useMediaQuery("(max-width:960px)");
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
   return (
     <Drawer
