@@ -14,6 +14,8 @@ import {
   TableContainer,
   Button,
   Skeleton,
+  Tooltip,
+  IconButton,
 } from "@mui/material";
 import { motion } from "framer-motion";
 import WorkIcon from "@mui/icons-material/Work";
@@ -25,12 +27,15 @@ import EmailIcon from "@mui/icons-material/Email";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import ActivityIcon from "@mui/icons-material/History";
+import CrownIcon from "@mui/icons-material/Star";
 import { Link } from "react-router-dom";
 
 import { getAllJobs } from "../../services/CandidateApi";
 import { getCompanyApplications } from "../../services/ApplicationApi";
 import { getHRs, getActivityStats } from "../../services/CompanyApi";
+import { getCompanySubscription, upgradeToPremium } from "../../services/SubscriptionApi";
 import DetailOverlay, { OverlayField, OverlayBadge, OverlaySection } from "../../components/shared/DetailOverlay";
+import SubscriptionModal from "../../components/modals/SubscriptionModal";
 
 function GlassCard({ children, sx = {} }) {
   return (
@@ -69,6 +74,9 @@ export default function CompanyDashboard() {
   const [activityStats, setActivityStats] = useState(null);
   const [user, setUser] = useState(null);
   const [isCompanyAdmin, setIsCompanyAdmin] = useState(false);
+  const [subscription, setSubscription] = useState(null);
+  const [showSubscriptionModal, setShowSubscriptionModal] = useState(false);
+  const [upgrading, setUpgrading] = useState(false);
 
   useEffect(() => {
     const loadCompanyData = async () => {
@@ -77,6 +85,20 @@ export default function CompanyDashboard() {
         const userData = userStr ? JSON.parse(userStr) : null;
         setUser(userData);
         setIsCompanyAdmin(userData?.role === "company_admin");
+
+        // Load subscription
+        if (userData?.role === "company_admin") {
+          try {
+            const subRes = await getCompanySubscription();
+            setSubscription(subRes.data);
+            // Show modal if not premium on first load
+            if (subRes.data?.plan !== "premium") {
+              setShowSubscriptionModal(true);
+            }
+          } catch (subErr) {
+            console.warn("Subscription fetch failed:", subErr);
+          }
+        }
 
         const [jobRes, appRes] = await Promise.all([
           getAllJobs(),
@@ -175,6 +197,19 @@ export default function CompanyDashboard() {
   );
   const totalShortlisted = shortlistedApps.length || Math.round(totalApps * 0.3);
 
+  const handleUpgrade = async (plan) => {
+    setUpgrading(true);
+    try {
+      const res = await upgradeToPremium();
+      setSubscription(res.data);
+      setShowSubscriptionModal(false);
+    } catch (error) {
+      console.error("Upgrade failed:", error);
+    } finally {
+      setUpgrading(false);
+    }
+  };
+
   const stats = [
     { title: "Active Job Listings", value: loading ? "—" : activeJobs, label: "Hiring slots open", color: "#60a5fa", icon: <WorkIcon /> },
     { title: "Total Applications", value: loading ? "—" : totalApps, label: "Recruits in funnel", color: "#a78bfa", icon: <PeopleIcon /> },
@@ -195,6 +230,29 @@ export default function CompanyDashboard() {
               Oversee your active openings and monitor recruitment funnel metrics.
             </Typography>
           </Box>
+          
+          {/* Premium Badge / Button */}
+          {subscription && subscription.plan !== "premium" && (
+            <Tooltip title="Upgrade to unlock premium features">
+              <Button
+                onClick={() => setShowSubscriptionModal(true)}
+                startIcon={<CrownIcon />}
+                sx={{
+                  background: "linear-gradient(135deg, #f59e0b, #f97316)",
+                  color: "white",
+                  fontWeight: 700,
+                  textTransform: "none",
+                  px: 2,
+                  "&:hover": {
+                    background: "linear-gradient(135deg, #f97316, #ea580c)",
+                    boxShadow: "0 8px 24px rgba(249,115,22,0.4)",
+                  },
+                }}
+              >
+                Upgrade to Premium
+              </Button>
+            </Tooltip>
+          )}
         </Box>
 
         {/* STATS */}
@@ -461,6 +519,8 @@ export default function CompanyDashboard() {
                   variant="outlined"
                   fullWidth
                   startIcon={<FileDownloadIcon />}
+                  component={Link}
+                  to="/company/export"
                   sx={{
                     mt: 2,
                     textTransform: "none",
@@ -567,6 +627,7 @@ export default function CompanyDashboard() {
                   <Button
                     variant="outlined"
                     fullWidth
+                    disabled
                     startIcon={<ActivityIcon />}
                     sx={{
                       mt: 2,
@@ -579,6 +640,7 @@ export default function CompanyDashboard() {
                         borderColor: "rgba(168,85,247,0.5)",
                       },
                     }}
+                    title="Activity log feature coming soon"
                   >
                     View All Activities
                   </Button>
@@ -658,6 +720,15 @@ export default function CompanyDashboard() {
           </Box>
         )}
       </DetailOverlay>
+
+      {/* SUBSCRIPTION MODAL */}
+      <SubscriptionModal
+        open={showSubscriptionModal}
+        onClose={() => setShowSubscriptionModal(false)}
+        currentPlan={subscription?.plan || "free"}
+        onUpgrade={handleUpgrade}
+        loading={upgrading}
+      />
     </motion.div>
   );
 }

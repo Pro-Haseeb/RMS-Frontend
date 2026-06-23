@@ -8,6 +8,7 @@ import {
   Avatar,
   Skeleton,
   Button,
+  Card,
 } from "@mui/material";
 import {
   Work,
@@ -20,6 +21,7 @@ import {
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { getAllJobs, getMyInterviews } from "../../services/CandidateApi.js";
+import { getCandidateApplications } from "../../services/ApplicationApi.js";
 import {
   getInterviewStatus,
   formatInterviewDate,
@@ -49,6 +51,34 @@ function GlassCard({ children, sx = {} }) {
   );
 }
 
+// Helper function to get status color
+function getStatusColor(status) {
+  const statusColors = {
+    pending: "#3b82f6",
+    shortlisted: "#10b981",
+    rejected: "#ef4444",
+    interviewed: "#f59e0b",
+    selected: "#34d399",
+    applied: "#3b82f6",
+  };
+  return statusColors[status?.toLowerCase()] || "#64748b";
+}
+
+// Helper function to format date
+function formatDate(date) {
+  const now = new Date();
+  const diffMs = now - date;
+  const diffMins = Math.floor(diffMs / 60000);
+  const diffHours = Math.floor(diffMs / 3600000);
+  const diffDays = Math.floor(diffMs / 86400000);
+
+  if (diffMins < 60) return `${diffMins}m ago`;
+  if (diffHours < 24) return `${diffHours}h ago`;
+  if (diffDays < 7) return `${diffDays}d ago`;
+  
+  return date.toLocaleDateString();
+}
+
 export default function CandidateDashboard() {
   const navigate = useNavigate();
   const [jobs, setJobs] = useState([]);
@@ -56,35 +86,33 @@ export default function CandidateDashboard() {
   const [loading, setLoading] = useState(true);
 
   const user = JSON.parse(localStorage.getItem("user") || "{}");
-  const candidateId = user._id || user.email || "guest";
-  const storageKey = `appliedJobs_${candidateId}`;
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const [jobsRes, interviewsRes] = await Promise.all([
+        const [jobsRes, applicationsRes, interviewsRes] = await Promise.all([
           getAllJobs().catch(() => ({ data: [] })),
+          getCandidateApplications().catch(() => ({ data: [] })),
           getMyInterviews().catch(() => ({ data: { data: [] } })),
         ]);
 
         const allJobs = Array.isArray(jobsRes.data) ? jobsRes.data : [];
-        const appliedList = JSON.parse(localStorage.getItem(storageKey) || "[]");
-        const userAppliedJobs = allJobs.filter((job) => appliedList.includes(job._id));
+        const candidateApps = Array.isArray(applicationsRes.data) ? applicationsRes.data : [];
+        
+        // Map applications to jobs with real status
+        const mappedJobs = candidateApps.map((app) => ({
+          ...app.job,
+          _id: app.job._id,
+          appId: app._id,
+          appStatus: app.status || "pending",
+          appColor: getStatusColor(app.status || "pending"),
+          appDate: app.createdAt ? formatDate(new Date(app.createdAt)) : "Recently",
+          score: app.score || 0,
+          feedback: app.feedback || "",
+        }));
 
-        const mapped = userAppliedJobs.map((job, index) => {
-          const statuses = ["Applied", "Shortlisted", "Under Review", "Rejected"];
-          const colors = ["#3b82f6", "#10b981", "#f59e0b", "#ef4444"];
-          const statusIdx = index % statuses.length;
-          return {
-            ...job,
-            appStatus: statuses[statusIdx],
-            appColor: colors[statusIdx],
-            appDate: `${(index * 2) + 1} day${index * 2 === 0 ? "" : "s"} ago`,
-          };
-        });
-
-        setJobs(mapped);
+        setJobs(mappedJobs);
         setInterviews(interviewsRes.data?.data || []);
       } catch (error) {
         console.error("Error loading candidate dashboard:", error);
@@ -93,7 +121,7 @@ export default function CandidateDashboard() {
       }
     };
     fetchData();
-  }, [storageKey]);
+  }, []);
 
   const appliedCount = jobs.length;
   const shortlistedCount = jobs.filter((j) => j.appStatus === "Shortlisted").length;

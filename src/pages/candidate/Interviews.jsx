@@ -9,6 +9,13 @@ import {
   Alert,
   IconButton,
   Tooltip,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
 } from "@mui/material";
 import {
   VideoCall as VideoCallIcon,
@@ -19,6 +26,7 @@ import {
   LocationOn as LocationIcon,
   ContentCopy as CopyIcon,
   Refresh as RefreshIcon,
+  OpenInNew as OpenInNewIcon,
 } from "@mui/icons-material";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
@@ -155,24 +163,127 @@ export default function CandidateInterviews() {
             </Button>
           </GlassCard>
         ) : (
-          <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
+          <Box sx={{ display: "flex", flexDirection: "column", gap: 4 }}>
             {upcoming.length > 0 && (
               <Box>
                 <Typography sx={{ color: "#94a3b8", fontWeight: 700, fontSize: "12px", textTransform: "uppercase", letterSpacing: "1px", mb: 2 }}>
-                  Upcoming & Active
+                  📋 Your Scheduled Interviews
                 </Typography>
-                <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-                  {upcoming.map((iv, idx) => (
-                    <InterviewCard key={iv._id} interview={iv} index={idx} onCopy={handleCopyLink} primary />
-                  ))}
-                </Box>
+                <GlassCard sx={{ p: 0, overflow: "hidden" }}>
+                  <TableContainer>
+                    <Table sx={{ minWidth: 600 }}>
+                      <TableHead>
+                        <TableRow sx={{ background: "rgba(255,255,255,0.02)", borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
+                          <TableCell sx={{ color: "#94a3b8", fontWeight: 700, fontSize: "11px", textTransform: "uppercase", py: 2 }}>
+                            Job Position
+                          </TableCell>
+                          <TableCell sx={{ color: "#94a3b8", fontWeight: 700, fontSize: "11px", textTransform: "uppercase", py: 2 }}>
+                            Company
+                          </TableCell>
+                          <TableCell sx={{ color: "#94a3b8", fontWeight: 700, fontSize: "11px", textTransform: "uppercase", py: 2 }}>
+                            Date & Time
+                          </TableCell>
+                          <TableCell sx={{ color: "#94a3b8", fontWeight: 700, fontSize: "11px", textTransform: "uppercase", py: 2 }}>
+                            Type
+                          </TableCell>
+                          <TableCell sx={{ color: "#94a3b8", fontWeight: 700, fontSize: "11px", textTransform: "uppercase", py: 2, textAlign: "right" }}>
+                            Action
+                          </TableCell>
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
+                        {upcoming.map((iv, idx) => {
+                          const status = getInterviewStatus(iv);
+                          const isOnline = iv.interviewType === "online";
+                          const showJoin = isOnline && iv.meetingLink && (status === "scheduled" || status === "active");
+
+                          return (
+                            <TableRow
+                              key={iv._id}
+                              sx={{
+                                borderBottom: "1px solid rgba(255,255,255,0.04)",
+                                "&:hover": { background: "rgba(255,255,255,0.02)" },
+                              }}
+                            >
+                              <TableCell sx={{ py: 2 }}>
+                                <Box>
+                                  <Typography sx={{ color: "#fff", fontWeight: 600, fontSize: "14px" }}>
+                                    {iv.job?.title || "Interview"}
+                                  </Typography>
+                                </Box>
+                              </TableCell>
+                              <TableCell sx={{ py: 2, color: "#cbd5e1", fontSize: "14px" }}>
+                                {iv.company?.name || "—"}
+                              </TableCell>
+                              <TableCell sx={{ py: 2 }}>
+                                <Box sx={{ display: "flex", flexDirection: "column", gap: 0.25 }}>
+                                  <Typography sx={{ color: "#cbd5e1", fontSize: "13px", fontWeight: 600 }}>
+                                    {formatInterviewDate(iv.interviewDate)}
+                                  </Typography>
+                                  <Typography sx={{ color: "#64748b", fontSize: "12px" }}>
+                                    {formatInterviewTime(iv.interviewDate)}
+                                  </Typography>
+                                </Box>
+                              </TableCell>
+                              <TableCell sx={{ py: 2 }}>
+                                <Chip
+                                  label={iv.interviewType === "online" ? "🎥 Online" : "📍 Onsite"}
+                                  size="small"
+                                  sx={{
+                                    background: iv.interviewType === "online" ? "rgba(96,165,250,0.1)" : "rgba(34,197,94,0.1)",
+                                    color: iv.interviewType === "online" ? "#60a5fa" : "#22c55e",
+                                    fontWeight: 600,
+                                  }}
+                                />
+                              </TableCell>
+                              <TableCell sx={{ py: 2, textAlign: "right" }}>
+                                <Box sx={{ display: "flex", gap: 1, justifyContent: "flex-end" }}>
+                                  {showJoin && (
+                                    <Tooltip title="Join meeting now">
+                                      <IconButton
+                                        size="small"
+                                        href={iv.meetingLink}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        sx={{
+                                          color: "#a855f7",
+                                          "&:hover": { background: "rgba(168,85,247,0.1)" },
+                                        }}
+                                      >
+                                        <VideoCallIcon sx={{ fontSize: 18 }} />
+                                      </IconButton>
+                                    </Tooltip>
+                                  )}
+                                  {isOnline && iv.meetingLink && (
+                                    <Tooltip title="Copy meeting link">
+                                      <IconButton
+                                        size="small"
+                                        onClick={() => onCopy(iv.meetingLink)}
+                                        sx={{
+                                          color: "#60a5fa",
+                                          "&:hover": { background: "rgba(96,165,250,0.1)" },
+                                        }}
+                                      >
+                                        <CopyIcon sx={{ fontSize: 18 }} />
+                                      </IconButton>
+                                    </Tooltip>
+                                  )}
+                                </Box>
+                              </TableCell>
+                            </TableRow>
+                          );
+                        })}
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                </GlassCard>
               </Box>
             )}
 
             {pastPending.length > 0 && (
               <Box>
                 <Typography sx={{ color: "#94a3b8", fontWeight: 700, fontSize: "12px", textTransform: "uppercase", letterSpacing: "1px", mb: 2 }}>
-                  Awaiting Result
+                  ⏳ Interviews Completed - Awaiting Result
                 </Typography>
                 <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
                   {pastPending.map((iv, idx) => (

@@ -17,6 +17,11 @@ export const getCompanyApplications = () =>
         "/application/company-applications"
     );
 
+export const getCandidateApplications = () =>
+    API.get(
+        "/application/my-applications"
+    );
+
 export const getJobRanking = (jobId) =>
     API.get(
         `/application/job-ranking/${jobId}`
