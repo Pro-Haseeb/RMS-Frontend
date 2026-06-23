@@ -18,7 +18,7 @@ import {
   CheckCircle as CheckCircleIcon,
   Close as CloseIcon,
   Star as StarIcon,
-  Zap as ZapIcon,
+  FlashOn as FlashOnIcon,
 } from "@mui/icons-material";
 import { motion } from "framer-motion";
 
@@ -62,7 +62,7 @@ export default function SubscriptionModal({
       name: "Premium Plan",
       price: "$99",
       description: "Complete RMS functionality for growing companies",
-      icon: <ZapIcon sx={{ fontSize: 40, color: "#f59e0b" }} />,
+      icon: <FlashOnIcon sx={{ fontSize: 40, color: "#f59e0b" }} />,
       period: "/month",
       features: [
         { text: "Maximum Company Admin: 1", included: true },
