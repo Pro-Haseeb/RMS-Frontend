@@ -19,8 +19,10 @@ import {
   Close as CloseIcon,
   Star as StarIcon,
   FlashOn as FlashOnIcon,
+  WorkspacePremium as WorkspacePremiumIcon,
 } from "@mui/icons-material";
 import { motion } from "framer-motion";
+import StripePaymentModal from "./StripePaymentModal";
 
 const MotionCard = motion(Card);
 
@@ -32,13 +34,14 @@ export default function SubscriptionModal({
   loading = false,
 }) {
   const [selectedPlan, setSelectedPlan] = useState(currentPlan);
+  const [showStripePayment, setShowStripePayment] = useState(false);
 
   const plans = {
     free: {
       name: "Free Plan",
       price: "$0",
       description: "Perfect for small companies or trial users",
-      icon: <CheckCircleIcon sx={{ fontSize: 40, color: "#3b82f6" }} />,
+      icon: <CheckCircleIcon sx={{ fontSize: 40, color: "#60a5fa" }} />,
       features: [
         { text: "Maximum Company Admin: 1", included: true },
         { text: "Maximum HR Users: 0", included: true },
@@ -54,15 +57,15 @@ export default function SubscriptionModal({
         "Interview module access is blocked",
       ],
       cta: "Current Plan",
-      color: "#64748b",
-      bg: "rgba(100,116,139,0.05)",
-      border: "1px solid rgba(100,116,139,0.2)",
+      color: "#60a5fa",
+      bg: "rgba(96,165,250,0.05)",
+      border: "1px solid rgba(96,165,250,0.2)",
     },
     premium: {
       name: "Premium Plan",
       price: "$99",
       description: "Complete RMS functionality for growing companies",
-      icon: <FlashOnIcon sx={{ fontSize: 40, color: "#f59e0b" }} />,
+      icon: <WorkspacePremiumIcon sx={{ fontSize: 40, color: "#a855f7" }} />,
       period: "/month",
       features: [
         { text: "Maximum Company Admin: 1", included: true },
@@ -79,30 +82,44 @@ export default function SubscriptionModal({
         "Interview scheduling module available",
       ],
       cta: currentPlan === "premium" ? "Current Plan" : "Upgrade Now",
-      color: "#f59e0b",
-      bg: "rgba(245,158,11,0.05)",
-      border: "2px solid rgba(245,158,11,0.4)",
+      color: "#a855f7",
+      bg: "rgba(168,85,247,0.08)",
+      border: "2px solid rgba(168,85,247,0.4)",
     },
   };
 
   const currentPlanData = plans[selectedPlan];
 
+  const handleUpgradeClick = (plan) => {
+    if (plan === "premium" && currentPlan !== "premium") {
+      setShowStripePayment(true);
+    }
+  };
+
+  const handlePaymentSuccess = (paymentMethod) => {
+    setShowStripePayment(false);
+    if (onUpgrade) {
+      onUpgrade("premium");
+    }
+  };
+
   return (
-    <Dialog
-      open={open}
-      onClose={onClose}
-      maxWidth="lg"
-      fullWidth
-      PaperProps={{
-        sx: {
-          borderRadius: "24px",
-          background: "linear-gradient(145deg, rgba(15,23,42,0.98) 0%, rgba(10,15,30,0.98) 100%)",
-          backdropFilter: "blur(24px)",
-          border: "1px solid rgba(255,255,255,0.08)",
-          boxShadow: "0 25px 100px rgba(0,0,0,0.6)",
-        },
-      }}
-    >
+    <>
+      <Dialog
+        open={open}
+        onClose={onClose}
+        maxWidth="lg"
+        fullWidth
+        PaperProps={{
+          sx: {
+            borderRadius: "24px",
+            background: "linear-gradient(145deg, rgba(15,23,42,0.98) 0%, rgba(10,15,30,0.98) 100%)",
+            backdropFilter: "blur(24px)",
+            border: "1px solid rgba(255,255,255,0.08)",
+            boxShadow: "0 25px 100px rgba(0,0,0,0.6)",
+          },
+        }}
+      >
       {/* Close Button */}
       <IconButton
         onClick={onClose}
@@ -302,11 +319,7 @@ export default function SubscriptionModal({
                   <Button
                     fullWidth
                     variant={selectedPlan === key ? "contained" : "outlined"}
-                    onClick={() =>
-                      selectedPlan !== "free" &&
-                      selectedPlan !== currentPlan &&
-                      onUpgrade(selectedPlan)
-                    }
+                    onClick={() => handleUpgradeClick(key)}
                     disabled={
                       loading || selectedPlan === currentPlan || selectedPlan === "free"
                     }
@@ -372,5 +385,14 @@ export default function SubscriptionModal({
         </Box>
       </Box>
     </Dialog>
+
+      {/* Stripe Payment Modal */}
+      <StripePaymentModal
+        open={showStripePayment}
+        onClose={() => setShowStripePayment(false)}
+        onSuccess={handlePaymentSuccess}
+        amount={99}
+      />
+    </>
   );
 }
