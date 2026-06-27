@@ -378,9 +378,18 @@ export default function RequestDemo() {
                   helperText={suggestions.company}
                   fullWidth
                   InputLabelProps={{
-                    style: { color: "#94a3b8" }
+                    style: { color: "#4472b2" }
                   }}
                   sx={{
+                    "& .MuiInputLabel-root": {
+                  color: "#94a3b8"
+                    },
+                    "& .MuiInputLabel-root.Mui-focused": {
+                  color: "#42a5f5"
+                    },
+                    "& .MuiInputLabel-root.MuiFormLabel-filled": {
+                  color: "#42a5f5"
+                    },
                     "& .MuiOutlinedInput-root": {
                       color: "white",
                       borderRadius: "14px",
@@ -413,6 +422,15 @@ export default function RequestDemo() {
                     style: { color: "#94a3b8" }
                   }}
                   sx={{
+                    "& .MuiInputLabel-root": {
+                  color: "#94a3b8"
+                    },
+                    "& .MuiInputLabel-root.Mui-focused": {
+                  color: "#42a5f5"
+                    },
+                    "& .MuiInputLabel-root.MuiFormLabel-filled": {
+                  color: "#42a5f5"
+                    },
                     "& .MuiOutlinedInput-root": {
                       color: "white",
                       borderRadius: "14px",
@@ -445,6 +463,15 @@ export default function RequestDemo() {
                     style: { color: "#94a3b8" }
                   }}
                   sx={{
+                    "& .MuiInputLabel-root": {
+                  color: "#94a3b8"
+                    },
+                    "& .MuiInputLabel-root.Mui-focused": {
+                  color: "#42a5f5"
+                    },
+                    "& .MuiInputLabel-root.MuiFormLabel-filled": {
+                  color: "#42a5f5"
+                    },
                     "& .MuiOutlinedInput-root": {
                       color: "white",
                       borderRadius: "14px",
@@ -477,6 +504,15 @@ export default function RequestDemo() {
                     style: { color: "#94a3b8" }
                   }}
                   sx={{
+                    "& .MuiInputLabel-root": {
+                  color: "#94a3b8"
+                    },
+                    "& .MuiInputLabel-root.Mui-focused": {
+                  color: "#42a5f5"
+                    },
+                    "& .MuiInputLabel-root.MuiFormLabel-filled": {
+                  color: "#42a5f5"
+                    },
                     "& .MuiOutlinedInput-root": {
                       color: "white",
                       borderRadius: "14px",
@@ -497,86 +533,75 @@ export default function RequestDemo() {
                 />
 
                 {/* PHONE */}
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    border:
-                      "1px solid rgba(255,255,255,0.15)",
-                    borderRadius: "14px",
-                    px: 1.5,
-                    py: 1.2,
-                    transition: "0.3s",
-                    background:
-                      "rgba(255,255,255,0.03)",
-
-                    "&:focus-within": {
-                      borderColor: "#42a5f5",
-                      boxShadow:
-                        "0 0 0 2px rgba(66,165,245,0.15)"
-                    }
-                  }}
-                >
-
+                <Box sx={{ display: "flex", gap: 1.5 }}>
+                
                   {/* COUNTRY CODE */}
-                  <select
+                  <TextField
+                    select
                     value={form.countryCode}
                     onChange={(e) =>
-                      setForm({
-                        ...form,
-                        countryCode: e.target.value
-                      })
+                      setForm({ ...form, countryCode: e.target.value })
                     }
-                    style={{
-                      border: "none",
-                      outline: "none",
-                      background: "transparent",
-                      fontSize: "14px",
-                      cursor: "pointer",
-                      paddingRight: "8px",
-                      color: "#fff",
-                      minWidth: "75px"
+                    label="Code"
+                    sx={{
+                      minWidth: "110px",
+                      "& .MuiOutlinedInput-root": {
+                        color: "#fff",
+                        borderRadius: "14px",
+                
+                        "& fieldset": {
+                          borderColor: "rgba(255,255,255,0.15)"
+                        },
+                        "&:hover fieldset": {
+                          borderColor: "#42a5f5"
+                        },
+                        "&.Mui-focused fieldset": {
+                          borderColor: "#42a5f5"
+                        }
+                      },
+                      "& .MuiInputLabel-root": {
+                        color: "#94a3b8"
+                      },
+                      "& .MuiInputLabel-root.Mui-focused": {
+                        color: "#42a5f5"
+                      }
                     }}
                   >
                     {countryCodes.map((item, i) => (
-                      <option
-                        key={i}
-                        value={item.code}
-                        style={{
-                          background: "#0f172a",
-                          color: "#fff"
-                        }}
-                      >
+                      <MenuItem key={i} value={item.code}>
                         {item.code}
-                      </option>
+                      </MenuItem>
                     ))}
-                  </select>
-
-                  {/* DIVIDER */}
-                  <span
-                    style={{
-                      color: "#475569",
-                      marginRight: "10px",
-                      marginLeft: "5px",
-                      fontSize: "18px"
-                    }}
-                  >
-                    |
-                  </span>
-
-                  {/* PHONE INPUT */}
-                  <input
+                  </TextField>
+                
+                  {/* PHONE NUMBER */}
+                  <TextField
+                    fullWidth
+                    label="Phone Number"
                     name="phone"
                     value={form.phone}
                     onChange={handleLiveCheck}
-                    placeholder="Phone number"
-                    style={{
-                      border: "none",
-                      outline: "none",
-                      flex: 1,
-                      fontSize: "15px",
-                      color: "#fff",
-                      background: "transparent"
+                    sx={{
+                      "& .MuiOutlinedInput-root": {
+                        color: "#fff",
+                        borderRadius: "14px",
+                
+                        "& fieldset": {
+                          borderColor: "rgba(255,255,255,0.15)"
+                        },
+                        "&:hover fieldset": {
+                          borderColor: "#42a5f5"
+                        },
+                        "&.Mui-focused fieldset": {
+                          borderColor: "#42a5f5"
+                        }
+                      },
+                      "& .MuiInputLabel-root": {
+                        color: "#94a3b8"
+                      },
+                      "& .MuiInputLabel-root.Mui-focused": {
+                        color: "#42a5f5"
+                      }
                     }}
                   />
                 </Box>
