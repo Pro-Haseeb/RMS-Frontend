@@ -59,7 +59,7 @@ export default function SubscriptionModal({
       cta: "Current Plan",
       color: "#60a5fa",
       bg: "rgba(96,165,250,0.05)",
-      border: "1px solid rgba(96,165,250,0.2)",
+      border: "1px solid rgba(96,165,250,0.15)",
     },
     premium: {
       name: "Premium Plan",
@@ -82,9 +82,9 @@ export default function SubscriptionModal({
         "Interview scheduling module available",
       ],
       cta: currentPlan === "premium" ? "Current Plan" : "Upgrade Now",
-      color: "#a855f7",
-      bg: "rgba(168,85,247,0.08)",
-      border: "2px solid rgba(168,85,247,0.4)",
+      color: "#60a5fa",
+      bg: "rgba(96,165,250,0.08)",
+      border: "2px solid rgba(96,165,250,0.3)",
     },
   };
 
@@ -112,11 +112,11 @@ export default function SubscriptionModal({
         fullWidth
         PaperProps={{
           sx: {
-            borderRadius: "24px",
-            background: "linear-gradient(145deg, rgba(15,23,42,0.98) 0%, rgba(10,15,30,0.98) 100%)",
-            backdropFilter: "blur(24px)",
+            borderRadius: "20px",
+            background: "rgba(15,23,42,0.95)",
+            backdropFilter: "blur(20px)",
             border: "1px solid rgba(255,255,255,0.08)",
-            boxShadow: "0 25px 100px rgba(0,0,0,0.6)",
+            boxShadow: "0 25px 80px rgba(0,0,0,0.5)",
           },
         }}
       >
@@ -143,12 +143,9 @@ export default function SubscriptionModal({
         <Box sx={{ mb: 4, textAlign: "center" }}>
           <Typography
             variant="h4"
-            fontWeight="900"
+            fontWeight="700"
             sx={{
-              background: "linear-gradient(135deg, #a855f7, #f59e0b)",
-              backgroundClip: "text",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
+              color: "#fff",
               mb: 1,
               fontSize: { xs: "1.75rem", md: "2.5rem" },
             }}
@@ -178,14 +175,6 @@ export default function SubscriptionModal({
                   position: "relative",
                   overflow: "hidden",
                   transform: selectedPlan === key ? "scale(1.02)" : "scale(1)",
-                  "&::before": {
-                    content: '""',
-                    position: "absolute",
-                    inset: 0,
-                    background: `linear-gradient(135deg, ${plan.color}20 0%, transparent 100%)`,
-                    opacity: selectedPlan === key ? 1 : 0,
-                    transition: "opacity 0.3s ease",
-                  },
                 }}
               >
                 <CardContent sx={{ p: 3, position: "relative", zIndex: 1 }}>
@@ -196,7 +185,7 @@ export default function SubscriptionModal({
                       <Typography
                         sx={{
                           fontSize: "16px",
-                          fontWeight: 700,
+                          fontWeight: 600,
                           color: plan.color,
                         }}
                       >
@@ -272,7 +261,7 @@ export default function SubscriptionModal({
                       sx={{
                         p: 2,
                         bgcolor: "rgba(255,255,255,0.03)",
-                        borderRadius: "8px",
+                        borderRadius: "10px",
                         mb: 3,
                         border: "1px solid rgba(255,255,255,0.05)",
                       }}
@@ -327,11 +316,10 @@ export default function SubscriptionModal({
                       py: 1.5,
                       fontSize: "14px",
                       fontWeight: 700,
-                      textTransform: "uppercase",
-                      letterSpacing: "0.5px",
+                      textTransform: "none",
                       background:
                         selectedPlan === key
-                          ? `linear-gradient(135deg, ${plan.color}, ${plan.color}dd)`
+                          ? "linear-gradient(135deg, #2563eb, #7c3aed)"
                           : "transparent",
                       color:
                         selectedPlan === key ? "white" : plan.color,
@@ -339,7 +327,7 @@ export default function SubscriptionModal({
                       "&:hover": {
                         background:
                           selectedPlan === key
-                            ? `linear-gradient(135deg, ${plan.color}, ${plan.color}99)`
+                            ? "linear-gradient(135deg, #1d4ed8, #6d28d9)"
                             : `rgba(${plan.color}, 0.1)`,
                       },
                       "&:disabled": {
@@ -364,9 +352,9 @@ export default function SubscriptionModal({
         <Box
           sx={{
             p: 2,
-            bgcolor: "rgba(168,85,247,0.05)",
-            border: "1px solid rgba(168,85,247,0.2)",
-            borderRadius: "12px",
+            bgcolor: "rgba(96,165,250,0.05)",
+            border: "1px solid rgba(96,165,250,0.15)",
+            borderRadius: "10px",
             textAlign: "center",
           }}
         >
@@ -375,7 +363,7 @@ export default function SubscriptionModal({
             <Typography
               component="span"
               sx={{
-                color: "#a855f7",
+                color: "#60a5fa",
                 fontWeight: 700,
               }}
             >

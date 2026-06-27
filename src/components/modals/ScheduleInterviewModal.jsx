@@ -110,7 +110,7 @@ export default function ScheduleInterviewModal({ open, onClose, application, onS
       fullWidth
       PaperProps={{
         sx: {
-          borderRadius: "16px",
+          borderRadius: "20px",
           background: "rgba(15,23,42,0.95)",
           backdropFilter: "blur(20px)",
           border: "1px solid rgba(255,255,255,0.08)",
@@ -123,14 +123,14 @@ export default function ScheduleInterviewModal({ open, onClose, application, onS
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          background: "linear-gradient(90deg, rgba(59,130,246,0.1), rgba(139,92,246,0.1))",
-          borderBottom: "1px solid rgba(255,255,255,0.06)",
+          background: "rgba(96,165,250,0.05)",
+          borderBottom: "1px solid rgba(255,255,255,0.08)",
           pb: 2,
         }}
       >
         <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
           <ScheduleIcon sx={{ color: "#60a5fa", fontSize: 24 }} />
-          <Typography variant="h6" fontWeight={700}>
+          <Typography variant="h6" fontWeight={700} sx={{ color: "#fff" }}>
             Schedule Interview
           </Typography>
         </Box>
@@ -143,8 +143,8 @@ export default function ScheduleInterviewModal({ open, onClose, application, onS
             p: 2,
             mb: 3,
             borderRadius: "12px",
-            background: "rgba(59,130,246,0.05)",
-            border: "1px solid rgba(59,130,246,0.15)",
+            background: "rgba(96,165,250,0.05)",
+            border: "1px solid rgba(96,165,250,0.15)",
           }}
         >
           <Grid container spacing={2}>
@@ -152,7 +152,7 @@ export default function ScheduleInterviewModal({ open, onClose, application, onS
               <Typography sx={{ color: "#64748b", fontSize: "11px", fontWeight: 700, textTransform: "uppercase", mb: 0.5 }}>
                 Candidate
               </Typography>
-              <Typography sx={{ color: "#fff", fontWeight: 600 }}>
+              <Typography sx={{ color: "#fff", fontWeight: 700 }}>
                 {application.candidate?.name || application.candidateName}
               </Typography>
             </Grid>
@@ -160,7 +160,7 @@ export default function ScheduleInterviewModal({ open, onClose, application, onS
               <Typography sx={{ color: "#64748b", fontSize: "11px", fontWeight: 700, textTransform: "uppercase", mb: 0.5 }}>
                 Applied For
               </Typography>
-              <Typography sx={{ color: "#fff", fontWeight: 600 }}>
+              <Typography sx={{ color: "#fff", fontWeight: 700 }}>
                 {application.job?.title}
               </Typography>
             </Grid>
@@ -341,7 +341,14 @@ export default function ScheduleInterviewModal({ open, onClose, application, onS
         <Button
           onClick={handleClose}
           disabled={loading}
-          sx={{ textTransform: "none", color: "#64748b", fontWeight: 600 }}
+          sx={{ 
+            textTransform: "none", 
+            color: "#64748b", 
+            fontWeight: 600,
+            "&:hover": {
+              background: "rgba(255,255,255,0.03)",
+            },
+          }}
         >
           Cancel
         </Button>

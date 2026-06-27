@@ -87,8 +87,8 @@ function CheckoutForm({ onSuccess, onCancel, amount = 99 }) {
         <Box
           sx={{
             p: 3,
-            borderRadius: "16px",
-            background: "rgba(255,255,255,0.02)",
+            borderRadius: "12px",
+            background: "rgba(255,255,255,0.03)",
             border: "1px solid rgba(255,255,255,0.08)",
             mb: 2,
           }}
@@ -112,7 +112,17 @@ function CheckoutForm({ onSuccess, onCancel, amount = 99 }) {
         </Box>
 
         {error && (
-          <Alert severity="error" sx={{ mb: 2, borderRadius: "12px" }}>
+          <Alert
+            severity="error"
+            sx={{
+              mb: 2,
+              borderRadius: "10px",
+              background: "rgba(239,68,68,0.1)",
+              border: "1px solid rgba(239,68,68,0.2)",
+              color: "#fca5a5",
+              "& .MuiAlert-icon": { color: "#f87171" },
+            }}
+          >
             {error}
           </Alert>
         )}
@@ -121,19 +131,19 @@ function CheckoutForm({ onSuccess, onCancel, amount = 99 }) {
       <Box
         sx={{
           p: 3,
-          borderRadius: "16px",
+          borderRadius: "12px",
           background: "rgba(96,165,250,0.05)",
-          border: "1px solid rgba(96,165,250,0.2)",
+          border: "1px solid rgba(96,165,250,0.15)",
           mb: 3,
         }}
       >
         <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
           <Typography sx={{ color: "#94a3b8", fontSize: "14px" }}>Premium Plan</Typography>
-          <Typography sx={{ color: "#fff", fontWeight: 700, fontSize: "14px" }}>${amount}/month</Typography>
+          <Typography sx={{ color: "#fff", fontWeight: 600, fontSize: "14px" }}>${amount}/month</Typography>
         </Box>
         <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
           <Typography sx={{ color: "#94a3b8", fontSize: "14px" }}>Total</Typography>
-          <Typography sx={{ color: "#60a5fa", fontWeight: 800, fontSize: "18px" }}>${amount}</Typography>
+          <Typography sx={{ color: "#60a5fa", fontWeight: 700, fontSize: "18px" }}>${amount}</Typography>
         </Box>
       </Box>
 
@@ -150,14 +160,14 @@ function CheckoutForm({ onSuccess, onCancel, amount = 99 }) {
           disabled={processing}
           sx={{
             py: 1.5,
-            borderRadius: "12px",
-            borderColor: "rgba(255,255,255,0.2)",
-            color: "#94a3b8",
+            borderRadius: "10px",
+            borderColor: "rgba(255,255,255,0.1)",
+            color: "#64748b",
             fontWeight: 600,
             textTransform: "none",
             "&:hover": {
-              borderColor: "rgba(255,255,255,0.3)",
-              background: "rgba(255,255,255,0.05)",
+              borderColor: "rgba(255,255,255,0.2)",
+              background: "rgba(255,255,255,0.03)",
             },
           }}
         >
@@ -171,17 +181,12 @@ function CheckoutForm({ onSuccess, onCancel, amount = 99 }) {
           startIcon={processing ? <CircularProgress size={20} color="inherit" /> : <CheckCircleIcon />}
           sx={{
             py: 1.5,
-            borderRadius: "12px",
-            background: "linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)",
+            borderRadius: "10px",
+            background: "linear-gradient(135deg, #2563eb, #7c3aed)",
             fontWeight: 700,
             textTransform: "none",
-            boxShadow: "0 4px 20px rgba(59,130,246,0.3)",
-            "&:hover": {
-              background: "linear-gradient(135deg, #2563eb 0%, #7c3aed 100%)",
-            },
-            "&:disabled": {
-              opacity: 0.6,
-            },
+            "&:hover": { background: "linear-gradient(135deg, #1d4ed8, #6d28d9)" },
+            "&.Mui-disabled": { background: "rgba(59,130,246,0.3)", color: "rgba(255,255,255,0.5)" },
           }}
         >
           {processing ? "Processing..." : `Pay $${amount}`}
@@ -215,11 +220,11 @@ export default function StripePaymentModal({ open, onClose, onSuccess, amount = 
       fullWidth
       PaperProps={{
         sx: {
-          borderRadius: "24px",
-          background: "linear-gradient(145deg, rgba(15,23,42,0.98) 0%, rgba(10,15,30,0.98) 100%)",
-          backdropFilter: "blur(24px)",
+          borderRadius: "20px",
+          background: "rgba(15,23,42,0.95)",
+          backdropFilter: "blur(20px)",
           border: "1px solid rgba(255,255,255,0.08)",
-          boxShadow: "0 25px 100px rgba(0,0,0,0.6)",
+          boxShadow: "0 25px 80px rgba(0,0,0,0.5)",
         },
       }}
     >
@@ -253,28 +258,28 @@ export default function StripePaymentModal({ open, onClose, onSuccess, amount = 
               height: 80,
               borderRadius: "20px",
               background: paymentSuccess 
-                ? "linear-gradient(135deg, #10b981 0%, #059669 100%)"
-                : "linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)",
+                ? "rgba(52,211,153,0.1)"
+                : "rgba(96,165,250,0.1)",
+              border: paymentSuccess 
+                ? "1px solid rgba(52,211,153,0.2)"
+                : "1px solid rgba(96,165,250,0.2)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
               mx: "auto",
               mb: 2,
-              boxShadow: paymentSuccess
-                ? "0 10px 40px rgba(16,185,129,0.3)"
-                : "0 10px 40px rgba(59,130,246,0.3)",
             }}
           >
             {paymentSuccess ? (
-              <CheckCircleIcon sx={{ fontSize: 48, color: "white" }} />
+              <CheckCircleIcon sx={{ fontSize: 48, color: "#34d399" }} />
             ) : (
-              <CreditCardIcon sx={{ fontSize: 48, color: "white" }} />
+              <CreditCardIcon sx={{ fontSize: 48, color: "#60a5fa" }} />
             )}
           </MotionCard>
           
           <Typography
             variant="h5"
-            fontWeight="800"
+            fontWeight="700"
             sx={{
               color: "#fff",
               mb: 1,
@@ -300,13 +305,13 @@ export default function StripePaymentModal({ open, onClose, onSuccess, amount = 
               animate={{ opacity: 1, y: 0 }}
               sx={{
                 p: 3,
-                borderRadius: "16px",
-                background: "rgba(16,185,129,0.05)",
-                border: "1px solid rgba(16,185,129,0.2)",
+                borderRadius: "12px",
+                background: "rgba(52,211,153,0.05)",
+                border: "1px solid rgba(52,211,153,0.15)",
                 mb: 3,
               }}
             >
-              <Typography sx={{ color: "#10b981", fontWeight: 700, mb: 1 }}>
+              <Typography sx={{ color: "#34d399", fontWeight: 700, mb: 1 }}>
                 🎉 Welcome to Premium!
               </Typography>
               <Typography sx={{ color: "#cbd5e1", fontSize: "13px" }}>
@@ -320,11 +325,11 @@ export default function StripePaymentModal({ open, onClose, onSuccess, amount = 
               onClick={handleClose}
               sx={{
                 py: 1.5,
-                borderRadius: "12px",
-                background: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
+                borderRadius: "10px",
+                background: "linear-gradient(135deg, #2563eb, #7c3aed)",
                 fontWeight: 700,
                 textTransform: "none",
-                boxShadow: "0 4px 20px rgba(16,185,129,0.3)",
+                "&:hover": { background: "linear-gradient(135deg, #1d4ed8, #6d28d9)" },
               }}
             >
               Get Started
