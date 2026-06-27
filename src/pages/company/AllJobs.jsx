@@ -13,7 +13,13 @@ import {
   ListItem,
   ListItemText,
   Divider,
-  Paper
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow
 } from "@mui/material";
 import { motion } from "framer-motion";
 import WorkIcon from "@mui/icons-material/Work";
@@ -25,6 +31,9 @@ import StarIcon from "@mui/icons-material/Star";
 import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 import LockIcon from "@mui/icons-material/Lock";
 import ShieldIcon from "@mui/icons-material/Shield";
+import EmailIcon from "@mui/icons-material/Email";
+import BadgeIcon from "@mui/icons-material/Badge";
+import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 
 import { getAllJobs } from "../../services/CandidateApi.js";
 import { getCompanyApplications } from "../../services/ApplicationApi.js";
@@ -520,6 +529,113 @@ export default function AllJobs() {
                   </Box>
                 </Box>
               )}
+            </Box>
+
+            {/* ALL APPLICATIONS FOR THIS JOB */}
+            <OverlaySection label="All Applications for This Job" />
+            <Box sx={{ mb: 3 }}>
+              {(() => {
+                const jobApplications = applications.filter(app => {
+                  const jid = app.job?._id || app.job;
+                  return jid === selectedJob._id;
+                });
+
+                if (jobApplications.length === 0) {
+                  return (
+                    <Box sx={{ p: 4, borderRadius: "16px", background: "rgba(255,255,255,0.01)", border: "1px dashed rgba(255,255,255,0.1)", textAlign: "center" }}>
+                      <PeopleIcon sx={{ fontSize: 40, color: "#475569", mb: 1.5 }} />
+                      <Typography variant="subtitle1" fontWeight="700" sx={{ color: "#e2e8f0", mb: 0.5 }}>
+                        No Applications Yet
+                      </Typography>
+                      <Typography variant="body2" sx={{ color: "#64748b" }}>
+                        No candidates have applied for this position yet.
+                      </Typography>
+                    </Box>
+                  );
+                }
+
+                return (
+                  <TableContainer component={Paper} sx={{ background: "rgba(255,255,255,0.01)", border: "1px solid rgba(255,255,255,0.05)", boxShadow: "none", borderRadius: "12px" }}>
+                    <Table size="small">
+                      <TableHead>
+                        <TableRow>
+                          <TableCell sx={{ borderBottom: "1px solid rgba(255,255,255,0.05)", color: "#475569", fontWeight: 700, fontSize: "12px" }}>Candidate</TableCell>
+                          <TableCell sx={{ borderBottom: "1px solid rgba(255,255,255,0.05)", color: "#475569", fontWeight: 700, fontSize: "12px" }}>Email</TableCell>
+                          <TableCell sx={{ borderBottom: "1px solid rgba(255,255,255,0.05)", color: "#475569", fontWeight: 700, fontSize: "12px" }}>AI Score</TableCell>
+                          <TableCell sx={{ borderBottom: "1px solid rgba(255,255,255,0.05)", color: "#475569", fontWeight: 700, fontSize: "12px" }}>Applied Date</TableCell>
+                          <TableCell sx={{ borderBottom: "1px solid rgba(255,255,255,0.05)", color: "#475569", fontWeight: 700, fontSize: "12px", textAlign: "right" }}>Status</TableCell>
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
+                        {jobApplications.map((app, idx) => {
+                          const status = app.status || "pending";
+                          const isShort = status === "shortlisted";
+                          const isRej = status === "rejected";
+                          const color = isShort ? "#34d399" : isRej ? "#f87171" : "#fbbf24";
+                          const bg = isShort ? "rgba(52,211,153,0.08)" : isRej ? "rgba(239,68,68,0.08)" : "rgba(251,191,36,0.08)";
+                          const border = isShort ? "rgba(52,211,153,0.2)" : isRej ? "rgba(239,68,68,0.2)" : "rgba(251,191,36,0.2)";
+
+                          return (
+                            <TableRow
+                              key={app._id || idx}
+                              sx={{
+                                "& td": {
+                                  color: "#cbd5e1",
+                                  borderBottom: "1px solid rgba(255,255,255,0.03)",
+                                  fontSize: "13px",
+                                  py: 1.2,
+                                },
+                                "&:hover": { background: "rgba(255,255,255,0.03)" },
+                                transition: "background 0.2s",
+                              }}
+                            >
+                              <TableCell sx={{ fontWeight: 600, color: "#fff !important" }}>
+                                {app.candidateName || app.candidate?.name || "—"}
+                              </TableCell>
+                              <TableCell sx={{ color: "#94a3b8 !important" }}>
+                                <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
+                                  <EmailIcon sx={{ fontSize: 12, color: "#475569" }} />
+                                  {app.candidateEmail || app.candidate?.email || "—"}
+                                </Box>
+                              </TableCell>
+                              <TableCell sx={{ fontWeight: 700, color: "#a78bfa !important" }}>
+                                <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
+                                  <StarIcon sx={{ fontSize: 12, color: "#a78bfa" }} />
+                                  {app.score !== undefined ? `${app.score}/100` : "—"}
+                                </Box>
+                              </TableCell>
+                              <TableCell sx={{ color: "#94a3b8 !important" }}>
+                                <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
+                                  <CalendarTodayIcon sx={{ fontSize: 12, color: "#475569" }} />
+                                  {app.createdAt ? new Date(app.createdAt).toLocaleDateString() : "—"}
+                                </Box>
+                              </TableCell>
+                              <TableCell sx={{ textAlign: "right" }}>
+                                <Box
+                                  sx={{
+                                    display: "inline-flex",
+                                    px: 1,
+                                    py: 0.3,
+                                    borderRadius: "6px",
+                                    background: bg,
+                                    border: `1px solid ${border}`,
+                                    color,
+                                    fontSize: "10px",
+                                    fontWeight: 700,
+                                    textTransform: "capitalize",
+                                  }}
+                                >
+                                  {status}
+                                </Box>
+                              </TableCell>
+                            </TableRow>
+                          );
+                        })}
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                );
+              })()}
             </Box>
 
             {/* CANDIDATE LEADERBOARD */}
