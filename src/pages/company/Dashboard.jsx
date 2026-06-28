@@ -68,6 +68,7 @@ const thStyle = {
 export default function CompanyDashboard() {
   const [jobs, setJobs] = useState([]);
   const [applications, setApplications] = useState([]);
+  const [hrs, setHrs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedApp, setSelectedApp] = useState(null);
   const [exportStats, setExportStats] = useState(null);
@@ -111,6 +112,8 @@ export default function CompanyDashboard() {
         // Load activity stats (only for company admin)
         if (userData?.role === "company_admin") {
           getActivityStats().then(res => setActivityStats(res.data)).catch(() => setActivityStats(null));
+          // Load HR users for subscription display
+          getHRs().then(res => setHrs(res.data || [])).catch(() => setHrs([]));
         }
 
         const allJobs = jobRes.data || [];
@@ -257,6 +260,102 @@ export default function CompanyDashboard() {
             </Tooltip>
           )}
         </Box>
+
+        {/* SUBSCRIPTION INFO CARD */}
+        {subscription && (
+          <Box
+            sx={{
+              mb: 4,
+              p: 3,
+              borderRadius: "16px",
+              background: subscription.plan === "premium" 
+                ? "rgba(96,165,250,0.08)" 
+                : "rgba(255,255,255,0.02)",
+              border: subscription.plan === "premium"
+                ? "1px solid rgba(96,165,250,0.2)"
+                : "1px solid rgba(255,255,255,0.05)",
+            }}
+          >
+            <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 2 }}>
+              <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+                <Box sx={{
+                  width: 48, height: 48, borderRadius: "12px",
+                  background: subscription.plan === "premium"
+                    ? "rgba(96,165,250,0.15)"
+                    : "rgba(255,255,255,0.05)",
+                  border: subscription.plan === "premium"
+                    ? "1px solid rgba(96,165,250,0.3)"
+                    : "1px solid rgba(255,255,255,0.1)",
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                }}>
+                  <CrownIcon sx={{ 
+                    fontSize: 24, 
+                    color: subscription.plan === "premium" ? "#60a5fa" : "#94a3b8" 
+                  }} />
+                </Box>
+                <Box>
+                  <Typography variant="h6" fontWeight={700} sx={{ color: "#fff", mb: 0.5 }}>
+                    {subscription.plan === "premium" ? "Premium Plan" : "Free Plan"}
+                  </Typography>
+                  <Typography sx={{ color: "#94a3b8", fontSize: "13px" }}>
+                    {subscription.plan === "premium" 
+                      ? subscription.endDate 
+                        ? `Valid until ${new Date(subscription.endDate).toLocaleDateString()}`
+                        : "Active"
+                      : "Basic features included"
+                    }
+                  </Typography>
+                </Box>
+              </Box>
+
+              <Box sx={{ display: "flex", gap: 3, flexWrap: "wrap" }}>
+                <Box sx={{ textAlign: "center" }}>
+                  <Typography sx={{ color: "#64748b", fontSize: "11px", fontWeight: 700, textTransform: "uppercase", mb: 0.5 }}>
+                    Jobs Posted
+                  </Typography>
+                  <Typography sx={{ color: "#fff", fontWeight: 700, fontSize: "18px" }}>
+                    {subscription.jobsPostedThisMonth || 0}
+                    <Typography component="span" sx={{ color: "#94a3b8", fontSize: "14px", ml: 0.5 }}>
+                      /{subscription.monthlyJobPostLimit === 999999 ? "∞" : subscription.monthlyJobPostLimit}
+                    </Typography>
+                  </Typography>
+                </Box>
+
+                <Box sx={{ textAlign: "center" }}>
+                  <Typography sx={{ color: "#64748b", fontSize: "11px", fontWeight: 700, textTransform: "uppercase", mb: 0.5 }}>
+                    HR Users
+                  </Typography>
+                  <Typography sx={{ color: "#fff", fontWeight: 700, fontSize: "18px" }}>
+                    {hrs.length || 0}
+                    <Typography component="span" sx={{ color: "#94a3b8", fontSize: "14px", ml: 0.5 }}>
+                      /{subscription.maxHRUsers}
+                    </Typography>
+                  </Typography>
+                </Box>
+
+                {subscription.plan !== "premium" && (
+                  <Button
+                    onClick={() => setShowSubscriptionModal(true)}
+                    sx={{
+                      background: "linear-gradient(135deg, #2563eb, #7c3aed)",
+                      color: "white",
+                      fontWeight: 700,
+                      textTransform: "none",
+                      px: 2.5,
+                      py: 1,
+                      borderRadius: "10px",
+                      "&:hover": {
+                        background: "linear-gradient(135deg, #1d4ed8, #6d28d9)",
+                      },
+                    }}
+                  >
+                    Upgrade
+                  </Button>
+                )}
+              </Box>
+            </Box>
+          </Box>
+        )}
 
         {/* STATS */}
         <Grid container spacing={3} sx={{ mb: 4 }}>
