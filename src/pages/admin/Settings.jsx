@@ -5,8 +5,61 @@ import {
   Button,
   Paper
 } from "@mui/material";
+import { useState, useEffect } from "react";
+import {
+  getSettings,
+  updateSystemSettings,
+} from "../../services/SettingsApi";
 
 export default function Settings() {
+  const [settings, setSettings] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [platformName, setPlatformName] = useState("RecruitAI");
+  const [supportEmail, setSupportEmail] = useState("support@recruitai.com");
+
+  useEffect(() => {
+    loadSettings();
+  }, []);
+
+  const loadSettings = async () => {
+    try {
+      const res = await getSettings();
+      const data = res.data;
+      setSettings(data);
+      setPlatformName(data.platformName || "RecruitAI");
+      setSupportEmail(data.supportEmail || "support@recruitai.com");
+    } catch (error) {
+      console.error("Failed to load settings:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSaveSystemSettings = async () => {
+    setSaving(true);
+    try {
+      await updateSystemSettings({
+        platformName,
+        supportEmail,
+      });
+      alert("System settings saved successfully!");
+    } catch (error) {
+      console.error("Failed to save settings:", error);
+      alert("Failed to save settings");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <Box sx={{ color: "white", p: 4 }}>
+        <Typography>Loading settings...</Typography>
+      </Box>
+    );
+  }
+
   return (
     <Box
       sx={{
@@ -106,6 +159,8 @@ export default function Settings() {
         <TextField
           label="Platform Name"
           fullWidth
+          value={platformName}
+          onChange={(e) => setPlatformName(e.target.value)}
           sx={{
             mb: 3,
 
@@ -135,6 +190,8 @@ export default function Settings() {
         <TextField
           label="Support Email"
           fullWidth
+          value={supportEmail}
+          onChange={(e) => setSupportEmail(e.target.value)}
           sx={{
             mb: 3,
 
@@ -163,6 +220,8 @@ export default function Settings() {
 
         <Button
           variant="contained"
+          onClick={handleSaveSystemSettings}
+          disabled={saving}
           sx={{
             borderRadius: "14px",
             px: 4,
@@ -184,7 +243,7 @@ export default function Settings() {
             }
           }}
         >
-          Save Changes
+          {saving ? "Saving..." : "Save Changes"}
         </Button>
       </Paper>
 
