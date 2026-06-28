@@ -203,6 +203,9 @@ export default function CompanyDashboard() {
       const res = await upgradeToPremium();
       setSubscription(res.data);
       setShowSubscriptionModal(false);
+      // Refresh subscription data after upgrade
+      const subRes = await getCompanySubscription();
+      setSubscription(subRes.data);
     } catch (error) {
       console.error("Upgrade failed:", error);
     } finally {

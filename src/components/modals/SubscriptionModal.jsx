@@ -23,6 +23,7 @@ import {
 } from "@mui/icons-material";
 import { motion } from "framer-motion";
 import StripePaymentModal from "./StripePaymentModal";
+import { upgradeToPremium } from "../../services/SubscriptionApi";
 
 const MotionCard = motion(Card);
 
@@ -96,10 +97,17 @@ export default function SubscriptionModal({
     }
   };
 
-  const handlePaymentSuccess = (paymentMethod) => {
+  const handlePaymentSuccess = async (paymentMethod) => {
     setShowStripePayment(false);
-    if (onUpgrade) {
-      onUpgrade("premium");
+    try {
+      const response = await upgradeToPremium();
+      if (response.data?.success) {
+        if (onUpgrade) {
+          onUpgrade("premium");
+        }
+      }
+    } catch (error) {
+      console.error("Upgrade failed:", error);
     }
   };
 
