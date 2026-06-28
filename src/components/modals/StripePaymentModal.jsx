@@ -20,11 +20,12 @@ import {
 import { motion } from "framer-motion";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements, CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
+import { createPaymentIntent } from "../../services/PaymentApi";
 
 const MotionCard = motion(Card);
 
-// Stripe publishable key (replace with your actual key)
-const stripePromise = loadStripe("pk_test_your_stripe_publishable_key");
+// Stripe publishable key from environment
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY || "pk_test_your_stripe_publishable_key");
 
 function CheckoutForm({ onSuccess, onCancel, amount = 99 }) {
   const stripe = useStripe();
@@ -46,11 +47,24 @@ function CheckoutForm({ onSuccess, onCancel, amount = 99 }) {
     const cardElement = elements.getElement(CardElement);
 
     try {
-      // Create payment method
-      const { error, paymentMethod } = await stripe.createPaymentMethod({
-        type: "card",
-        card: cardElement,
-      });
+      // Create payment intent on backend
+      const { data: paymentData } = await createPaymentIntent();
+      
+      if (!paymentData.success || !paymentData.clientSecret) {
+        setError("Failed to initialize payment. Please try again.");
+        setProcessing(false);
+        return;
+      }
+
+      // Confirm payment with Stripe
+      const { error, paymentIntent } = await stripe.confirmCardPayment(
+        paymentData.clientSecret,
+        {
+          payment_method: {
+            card: cardElement,
+          },
+        }
+      );
 
       if (error) {
         setError(error.message);
@@ -58,16 +72,14 @@ function CheckoutForm({ onSuccess, onCancel, amount = 99 }) {
         return;
       }
 
-      // Here you would typically send the paymentMethod.id to your backend
-      // to complete the payment
-      console.log("Payment Method:", paymentMethod);
-      
-      // Simulate payment processing
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      onSuccess(paymentMethod);
+      if (paymentIntent.status === "succeeded") {
+        onSuccess({ paymentIntentId: paymentIntent.id });
+      } else {
+        setError("Payment processing failed. Please try again.");
+        setProcessing(false);
+      }
     } catch (err) {
-      setError("Payment failed. Please try again.");
+      setError(err.response?.data?.message || "Payment failed. Please try again.");
       setProcessing(false);
     }
   };

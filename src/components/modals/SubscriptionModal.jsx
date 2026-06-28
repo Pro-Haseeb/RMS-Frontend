@@ -97,17 +97,22 @@ export default function SubscriptionModal({
     }
   };
 
-  const handlePaymentSuccess = async (paymentMethod) => {
+  const handlePaymentSuccess = async (paymentData) => {
     setShowStripePayment(false);
     try {
-      const response = await upgradeToPremium();
-      if (response.data?.success) {
-        if (onUpgrade) {
-          onUpgrade("premium");
-        }
+      // Payment succeeded via Stripe, subscription is activated via webhook
+      // Refresh subscription data to get updated status
+      const subRes = await getCompanySubscription();
+      setSubscription(subRes.data);
+      
+      if (onUpgrade) {
+        onUpgrade("premium");
       }
+      
+      // Close modal after successful payment
+      onClose();
     } catch (error) {
-      console.error("Upgrade failed:", error);
+      console.error("Failed to refresh subscription:", error);
     }
   };
 
