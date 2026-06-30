@@ -33,7 +33,7 @@ import { Link } from "react-router-dom";
 import { getAllJobs } from "../../services/CandidateApi";
 import { getCompanyApplications } from "../../services/ApplicationApi";
 import { getHRs, getActivityStats } from "../../services/CompanyApi";
-import { getCompanySubscription, upgradeToPremium } from "../../services/SubscriptionApi";
+import { getCompanySubscription } from "../../services/SubscriptionApi";
 import DetailOverlay, { OverlayField, OverlayBadge, OverlaySection } from "../../components/shared/DetailOverlay";
 import SubscriptionModal from "../../components/modals/SubscriptionModal";
 
@@ -87,15 +87,11 @@ export default function CompanyDashboard() {
         setUser(userData);
         setIsCompanyAdmin(userData?.role === "company_admin");
 
-        // Load subscription
         if (userData?.role === "company_admin") {
           try {
             const subRes = await getCompanySubscription();
-            setSubscription(subRes.data);
-            // Show modal if not premium on first load
-            if (subRes.data?.plan !== "premium") {
-              setShowSubscriptionModal(true);
-            }
+            const subData = subRes.data?.data || subRes.data;
+            setSubscription(subData);
           } catch (subErr) {
             console.warn("Subscription fetch failed:", subErr);
           }
@@ -203,14 +199,16 @@ export default function CompanyDashboard() {
   const handleUpgrade = async (plan) => {
     setUpgrading(true);
     try {
-      const res = await upgradeToPremium();
-      setSubscription(res.data);
-      setShowSubscriptionModal(false);
-      // Refresh subscription data after upgrade
+      // SubscriptionModal already called upgradeToPremium() internally.
+      // Here we just refresh the local subscription state.
       const subRes = await getCompanySubscription();
-      setSubscription(subRes.data);
+      setSubscription(subRes.data?.data || subRes.data);
+      setShowSubscriptionModal(false);
     } catch (error) {
-      console.error("Upgrade failed:", error);
+      console.error("Subscription refresh failed:", error);
+      // Fallback: reload to pick up new subscription state
+      setShowSubscriptionModal(false);
+      window.location.reload();
     } finally {
       setUpgrading(false);
     }
@@ -797,7 +795,11 @@ export default function CompanyDashboard() {
             {selectedApp.resume && (
               <OverlayField label="Resume Attachment">
                 <a
-                  href={`http://localhost:5000/${selectedApp.resume.replace(/\\/g, "/")}`}
+                  href={
+                    selectedApp.resume.startsWith("http")
+                      ? selectedApp.resume
+                      : `${import.meta.env.VITE_API_URL?.replace("/api", "")}/${selectedApp.resume.replace(/\\/g, "/")}`
+                  }
                   target="_blank"
                   rel="noreferrer"
                   style={{

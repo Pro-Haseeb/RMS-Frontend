@@ -1,9 +1,9 @@
 import API from "./Api";
 
-// Create payment intent for premium subscription
+// Create Stripe payment intent for premium subscription
 export const createPaymentIntent = () =>
-  API.post("/payment/create-intent");
+  API.post("/payment/create-payment-intent");
 
-// Verify payment status
+// Verify payment status after Stripe redirect
 export const verifyPayment = (paymentIntentId) =>
   API.get(`/payment/verify/${paymentIntentId}`);
