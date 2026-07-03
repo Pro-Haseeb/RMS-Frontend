@@ -492,7 +492,11 @@ export default function Applications() {
                 {selectedApp.resume && (
                   <OverlayField label="Resume Attachment">
                     <a
-                      href={`http://localhost:5000/${selectedApp.resume.replace(/\\/g, "/")}`}
+                      href={
+                        selectedApp.resume?.startsWith("http")
+                          ? selectedApp.resume
+                          : `${import.meta.env.VITE_API_URL?.replace("/api", "")}/${selectedApp.resume?.replace(/\\/g, "/")}`
+                      }
                       target="_blank"
                       rel="noreferrer"
                       style={{
