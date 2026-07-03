@@ -1,16 +1,14 @@
 import API from "./Api";
 
-export const applyJob = (data) =>
-    API.post(
+export const applyJob = (data) => {
+    const headers = data instanceof FormData ? {} : { "Content-Type": "application/json" };
+
+    return API.post(
         "/application/apply",
         data,
-        {
-            headers: {
-                "Content-Type":
-                    "multipart/form-data",
-            },
-        }
+        { headers }
     );
+};
 
 export const getCompanyApplications = () =>
     API.get(
