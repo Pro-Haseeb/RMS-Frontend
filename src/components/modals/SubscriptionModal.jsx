@@ -231,7 +231,7 @@ export default function SubscriptionModal({
 
             borderRadius: "20px",
 
-            background: "rgba(15,23,42,0.95)",
+            background: "rgba(20, 33, 64, 0.95)",
 
             backdropFilter: "blur(20px)",
 
