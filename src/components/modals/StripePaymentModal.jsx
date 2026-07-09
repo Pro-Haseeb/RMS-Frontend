@@ -230,15 +230,18 @@ export default function StripePaymentModal({ open, onClose, onSuccess, amount = 
       onClose={handleClose}
       maxWidth="sm"
       fullWidth
-      PaperProps={{
-        sx: {
-          borderRadius: "20px",
-          background: "rgba(15,23,42,0.95)",
-          backdropFilter: "blur(20px)",
-          border: "1px solid rgba(255,255,255,0.08)",
-          boxShadow: "0 25px 80px rgba(0,0,0,0.5)",
-        },
-      }}
+       sx={{
+    '& .MuiDialog-paper': {
+      borderRadius: '20px',
+      backgroundColor: '#0f172a',
+      color: '#fff',
+      backdropFilter: 'blur(20px)',
+      border: '1px solid rgba(255,255,255,0.08)',
+      boxShadow: '0 25px 80px rgba(0,0,0,0.5)',
+      overflowY: 'auto',
+      maxHeight: '90vh',
+    },
+  }}
     >
       {/* Close Button */}
       <IconButton

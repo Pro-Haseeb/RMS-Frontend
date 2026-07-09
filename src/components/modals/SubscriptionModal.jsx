@@ -215,35 +215,24 @@ export default function SubscriptionModal({
 
     <>
 
-      <Dialog
-
-        open={open}
-
-        onClose={onClose}
-
-        maxWidth="lg"
-
-        fullWidth
-
-        PaperProps={{
-
-          sx: {
-
-            borderRadius: "20px",
-
-            background: "rgba(20, 33, 64, 0.95)",
-
-            backdropFilter: "blur(20px)",
-
-            border: "1px solid rgba(255,255,255,0.08)",
-
-            boxShadow: "0 25px 80px rgba(0,0,0,0.5)",
-
-          },
-
-        }}
-
-      >
+     <Dialog
+  open={open}
+  onClose={onClose}
+  maxWidth="lg"
+  fullWidth
+  sx={{
+    '& .MuiDialog-paper': {
+      borderRadius: '20px',
+      backgroundColor: '#0f172a',
+      color: '#fff',
+      backdropFilter: 'blur(20px)',
+      border: '1px solid rgba(255,255,255,0.08)',
+      boxShadow: '0 25px 80px rgba(0,0,0,0.5)',
+      overflowY: 'auto',
+      maxHeight: '90vh',
+    },
+  }}
+>
 
       {/* Close Button */}
 
@@ -259,15 +248,19 @@ export default function SubscriptionModal({
 
           top: 16,
 
-          color: "#94a3b8",
+          color: "white",
 
           zIndex: 10,
+
+          color: "white",
 
           "&:hover": {
 
             color: "white",
 
             bgcolor: "rgba(255,255,255,0.1)",
+
+            
 
           },
 
@@ -281,7 +274,7 @@ export default function SubscriptionModal({
 
 
 
-      <Box sx={{ p: { xs: 3, md: 4 } }}>
+      <Box sx={{ p: { xs: 3, md: 4 }, backgroundColor: '#0f172a', color: '#fff' }}>
 
         {/* Header */}
 
@@ -292,6 +285,8 @@ export default function SubscriptionModal({
             variant="h4"
 
             fontWeight="700"
+
+            color="white"
 
             sx={{
 
@@ -343,7 +338,7 @@ export default function SubscriptionModal({
 
                   height: "100%",
 
-                  background: plan.bg,
+                  backgroundColor: "rgba(255,255,255,0.05)",
 
                   border: plan.border,
 
@@ -491,13 +486,13 @@ export default function SubscriptionModal({
 
                           primary={feature.text}
 
-                          primaryTypographyProps={{
+                          sx={{
 
-                            sx: {
+                            "& .MuiListItemText-primary": {
 
                               fontSize: "13px",
 
-                              color: "#cbd5e1",
+                              color: "#ffffff",
 
                               fontWeight: feature.included ? 600 : 400,
 
@@ -649,7 +644,7 @@ export default function SubscriptionModal({
 
                       color:
 
-                        selectedPlan === key ? "white" : plan.color,
+                        selectedPlan === key ? "white" : "white",
 
                       border: `2px solid ${plan.color}`,
 
@@ -662,6 +657,13 @@ export default function SubscriptionModal({
                             ? "linear-gradient(135deg, #1d4ed8, #6d28d9)"
 
                             : `rgba(${plan.color}, 0.1)`,
+
+                            color: 
+                            selectedPlan === key
+
+                            ? "white"
+
+                            : `white`,
 
                       },
 
