@@ -63,7 +63,7 @@ export default function RequestDemo() {
         if (
       error.response?.status === 400 
     ) {
-      alert("This email has already been used for a demo request.");
+      alert(error.response.message);
     } else {
       alert("Something went wrong. Please try again.");
     }
