@@ -17,7 +17,9 @@ import {
 import MenuIcon from "@mui/icons-material/Menu";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import logo from "../assets/logo.png"
 import { useNavigate, useLocation } from "react-router-dom";
+
 
 const drawerWidth = 240;
 const brandGradient = "linear-gradient(135deg,#60a5fa,#93c5fd,#e0f2fe)";
@@ -230,11 +232,6 @@ export default function Navbar({ hasSidebar = false, sidebarWidth = drawerWidth,
 
                     {isCompanyAdmin && (
                       <>
-                        <IconButton sx={{ color: "#cbd5e1", py: 1, px: 1.2, background: "rgba(255,255,255,0.03)", border: "1px solid rgba(148,163,184,0.16)" }}>
-                          <Badge badgeContent={5} color="error">
-                            <NotificationsIcon />
-                          </Badge>
-                        </IconButton>
                         <Button
                           onClick={(event) => setProfileAnchor(event.currentTarget)}
                           sx={{
@@ -290,36 +287,26 @@ export default function Navbar({ hasSidebar = false, sidebarWidth = drawerWidth,
               >
                 <Box
                   sx={{
-                    width: 44,
-                    height: 44,
-                    borderRadius: "16px",
-                    background: "linear-gradient(135deg,#1d4ed8,#60a5fa)",
-                    display: "grid",
-                    placeItems: "center",
-                    boxShadow: "0 16px 35px rgba(37,99,235,0.22)"
+                    width: { xs: 180, md: 260 },
+                    height: { xs: 56, md: 76 },
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    overflow: "hidden",
+                    ml: -5,
+                    mr: 0.5
                   }}
                 >
-                  <Typography variant="h6" sx={{ color: "#fff", fontWeight: 900, lineHeight: 1 }}>
-                    AI
-                  </Typography>
-                </Box>
-
-                <Box sx={{ minWidth: 0 }}>
-                  <Typography
-                    variant="h6"
-                    fontWeight={900}
-                    sx={{
-                      background: brandGradient,
-                      WebkitBackgroundClip: "text",
-                      WebkitTextFillColor: "transparent",
-                      letterSpacing: "0.6px"
+                  <img
+                    src={logo}
+                    alt="RecruitAI Logo"
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "contain",
+                      display: "block"
                     }}
-                  >
-                    RecruitAI RMS
-                  </Typography>
-                  <Typography sx={{ color: "#94a3b8", fontSize: 12, letterSpacing: "0.3px" }}>
-                    Recruitment Management System
-                  </Typography>
+                  />
                 </Box>
               </Box>
 
@@ -359,9 +346,6 @@ export default function Navbar({ hasSidebar = false, sidebarWidth = drawerWidth,
 
                     {isCandidate && (
                       <>
-                        <Button sx={{ ...actionButtonStyles, color: "#fff", border: "1px solid rgba(96,165,250,0.22)", background: "rgba(255,255,255,0.08)" }} onClick={() => navigate("/request-demo")}>
-                          Get Demo
-                        </Button>
                         <Button
                           onClick={(event) => setProfileAnchor(event.currentTarget)}
                           sx={{
@@ -386,11 +370,6 @@ export default function Navbar({ hasSidebar = false, sidebarWidth = drawerWidth,
 
                     {isCompanyAdmin && (
                       <>
-                        <IconButton sx={{ color: "#cbd5e1", py: 1, px: 1.2, background: "rgba(255,255,255,0.03)", border: "1px solid rgba(148,163,184,0.16)" }}>
-                          <Badge badgeContent={5} color="error">
-                            <NotificationsIcon />
-                          </Badge>
-                        </IconButton>
                         <Button
                           onClick={(event) => setProfileAnchor(event.currentTarget)}
                           sx={{

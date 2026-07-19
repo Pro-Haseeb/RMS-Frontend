@@ -529,23 +529,6 @@ export default function AuthPage() {
                 )}
               </AnimatePresence>
 
-              {tab === "login" && (
-                <Box sx={{ display: "flex", justifyContent: "flex-end", mt: -1 }}>
-                  <Link
-                    href="#"
-                    underline="hover"
-                    sx={{
-                      color: "#60a5fa",
-                      fontSize: "0.875rem",
-                      fontWeight: 500,
-                      transition: "color 0.2s",
-                      "&:hover": { color: "#93c5fd" }
-                    }}
-                  >
-                    Forgot password?
-                  </Link>
-                </Box>
-              )}
 
               <AnimatePresence>
                 {error && (

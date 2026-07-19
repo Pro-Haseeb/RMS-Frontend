@@ -216,7 +216,7 @@ export default function About() {
                 spacing={3}
                 mb={6}
               >
-                <Button
+            <Button
                   variant="contained"
                   size="large"
                   sx={{
@@ -230,31 +230,25 @@ export default function About() {
                     boxShadow:
                       "0px 12px 35px rgba(33,150,243,0.4)"
                   }}
+                    onClick={() =>
+    document.getElementById("core-features")?.scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    })
+  }
                 >
                   Explore Platform
                 </Button>
 
-                <Button
-                  variant="outlined"
-                  size="large"
-                  sx={{
-                    px: 5,
-                    py: 1.8,
-                    borderRadius: "16px",
-                    borderColor: "#90caf9",
-                    color: "white",
-                    "&:hover": {
-                      borderColor: "#00e5ff",
-                      background: "rgba(255,255,255,0.05)"
-                    }
-                  }}
-                >
-                  Learn More
-                </Button>
+               
               </Stack>
 
               {/* MINI FEATURES */}
-              <Grid container spacing={3}>
+              <Grid
+                container
+                spacing={3}
+                sx={{ mt: { xs: 3, md: 4 } }}
+              >
                 {[
                   {
                     icon: <TrendingUp color="primary" />,
@@ -396,6 +390,150 @@ export default function About() {
             </MotionBox>
           </Grid>
 
+          {/* TEAM SECTION */}
+<Container sx={{ py: 15 }}>
+  <MotionBox
+    initial={{ opacity: 0, y: 40 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    transition={{ duration: 1 }}
+    viewport={{ once: true }}
+  >
+    <Typography
+      variant="h3"
+      textAlign="center"
+      fontWeight="bold"
+      mb={3}
+      sx={{
+        background:
+          "linear-gradient(45deg,#42a5f5,#00e5ff)",
+        WebkitBackgroundClip: "text",
+        WebkitTextFillColor: "transparent"
+      }}
+    >
+      Meet Our Team
+    </Typography>
+
+    <Typography
+      textAlign="center"
+      sx={{
+        color: "rgba(255,255,255,0.7)",
+        mb: 10,
+        maxWidth: "700px",
+        mx: "auto",
+        lineHeight: 1.9
+      }}
+    >
+      Creative and passionate developers behind the
+      Recruitment Management System platform.
+    </Typography>
+  </MotionBox>
+
+  <Grid container spacing={5}>
+    {team.map((member, index) => (
+      <Grid item xs={12} sm={6} md={4} key={index}>
+        <MotionCard
+          initial={{
+            opacity: 0,
+            y: 70
+          }}
+          whileInView={{
+            opacity: 1,
+            y: 0
+          }}
+          transition={{
+            duration: 0.7,
+            delay: index * 0.2
+          }}
+          viewport={{ once: true }}
+          whileHover={{
+            y: -12,
+            scale: 1.03
+          }}
+          sx={{
+            background:
+              "linear-gradient(145deg, rgba(255,255,255,0.07), rgba(255,255,255,0.03))",
+            backdropFilter: "blur(14px)",
+            borderRadius: "30px",
+            border:
+              "1px solid rgba(255,255,255,0.08)",
+            textAlign: "center",
+            color: "white",
+            p: 5,
+            position: "relative",
+            overflow: "hidden",
+
+            "&::before": {
+              content: '""',
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "5px",
+              background:
+                "linear-gradient(90deg,#42a5f5,#00e5ff)"
+            }
+          }}
+        >
+          <Avatar
+            src={member.img}
+            sx={{
+              width: 120,
+              height: 120,
+              mx: "auto",
+              mb: 3,
+              border: "4px solid #1976d2",
+              boxShadow:
+                "0px 10px 35px rgba(33,150,243,0.4)"
+            }}
+          />
+
+          <Typography
+            variant="h5"
+            fontWeight="bold"
+            mb={1}
+          >
+            {member.name}
+          </Typography>
+
+          <Typography
+            sx={{
+              color: "rgba(255,255,255,0.7)",
+              lineHeight: 1.8,
+              mb: 3
+            }}
+          >
+            {member.role}
+          </Typography>
+
+          <Stack
+            direction="row"
+            justifyContent="center"
+            spacing={1}
+          >
+            <Chip
+              label="UI/UX"
+              sx={{
+                background:
+                  "rgba(66,165,245,0.15)",
+                color: "#90caf9"
+              }}
+            />
+
+            <Chip
+              label="Development"
+              sx={{
+                background:
+                  "rgba(0,229,255,0.12)",
+                color: "#80deea"
+              }}
+            />
+          </Stack>
+        </MotionCard>
+      </Grid>
+    ))}
+  </Grid>
+</Container>
+
           {/* CONTENT */}
           <Grid item xs={12} md={6}>
             <MotionBox
@@ -477,7 +615,8 @@ export default function About() {
       </Container>
 
 {/* CORE FEATURES - VISION PRO SCROLL EXPERIENCE */}
-<Box sx={{ py: 18, position: "relative" }}>
+<Box sx={{ py: 18, position: "relative" }}
+ id="core-features">
 
   {/* HEADER (sticky feel) */}
   <Box
@@ -669,149 +808,7 @@ export default function About() {
   </Container>
 </Box>
 
-{/* TEAM SECTION */}
-<Container sx={{ py: 15 }}>
-  <MotionBox
-    initial={{ opacity: 0, y: 40 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    transition={{ duration: 1 }}
-    viewport={{ once: true }}
-  >
-    <Typography
-      variant="h3"
-      textAlign="center"
-      fontWeight="bold"
-      mb={3}
-      sx={{
-        background:
-          "linear-gradient(45deg,#42a5f5,#00e5ff)",
-        WebkitBackgroundClip: "text",
-        WebkitTextFillColor: "transparent"
-      }}
-    >
-      Meet Our Team
-    </Typography>
 
-    <Typography
-      textAlign="center"
-      sx={{
-        color: "rgba(255,255,255,0.7)",
-        mb: 10,
-        maxWidth: "700px",
-        mx: "auto",
-        lineHeight: 1.9
-      }}
-    >
-      Creative and passionate developers behind the
-      Recruitment Management System platform.
-    </Typography>
-  </MotionBox>
-
-  <Grid container spacing={5}>
-    {team.map((member, index) => (
-      <Grid item xs={12} sm={6} md={4} key={index}>
-        <MotionCard
-          initial={{
-            opacity: 0,
-            y: 70
-          }}
-          whileInView={{
-            opacity: 1,
-            y: 0
-          }}
-          transition={{
-            duration: 0.7,
-            delay: index * 0.2
-          }}
-          viewport={{ once: true }}
-          whileHover={{
-            y: -12,
-            scale: 1.03
-          }}
-          sx={{
-            background:
-              "linear-gradient(145deg, rgba(255,255,255,0.07), rgba(255,255,255,0.03))",
-            backdropFilter: "blur(14px)",
-            borderRadius: "30px",
-            border:
-              "1px solid rgba(255,255,255,0.08)",
-            textAlign: "center",
-            color: "white",
-            p: 5,
-            position: "relative",
-            overflow: "hidden",
-
-            "&::before": {
-              content: '""',
-              position: "absolute",
-              top: 0,
-              left: 0,
-              width: "100%",
-              height: "5px",
-              background:
-                "linear-gradient(90deg,#42a5f5,#00e5ff)"
-            }
-          }}
-        >
-          <Avatar
-            src={member.img}
-            sx={{
-              width: 120,
-              height: 120,
-              mx: "auto",
-              mb: 3,
-              border: "4px solid #1976d2",
-              boxShadow:
-                "0px 10px 35px rgba(33,150,243,0.4)"
-            }}
-          />
-
-          <Typography
-            variant="h5"
-            fontWeight="bold"
-            mb={1}
-          >
-            {member.name}
-          </Typography>
-
-          <Typography
-            sx={{
-              color: "rgba(255,255,255,0.7)",
-              lineHeight: 1.8,
-              mb: 3
-            }}
-          >
-            {member.role}
-          </Typography>
-
-          <Stack
-            direction="row"
-            justifyContent="center"
-            spacing={1}
-          >
-            <Chip
-              label="UI/UX"
-              sx={{
-                background:
-                  "rgba(66,165,245,0.15)",
-                color: "#90caf9"
-              }}
-            />
-
-            <Chip
-              label="Development"
-              sx={{
-                background:
-                  "rgba(0,229,255,0.12)",
-                color: "#80deea"
-              }}
-            />
-          </Stack>
-        </MotionCard>
-      </Grid>
-    ))}
-  </Grid>
-</Container>
       {/* 🔵 PREMIUM FOOTER */}
 <Box
   sx={{

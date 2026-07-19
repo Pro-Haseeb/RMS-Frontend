@@ -305,7 +305,8 @@ export default function Home() {
             </style>
           </>
         )}
-        <Box
+       {/* Hero Section */}
+     <Box
           sx={{
             minHeight: "90vh",
             position: "relative",
@@ -323,62 +324,195 @@ export default function Home() {
               position: "absolute",
               inset: 0,
               background:
-                "linear-gradient(to right, rgba(2,6,23,0.96), rgba(15,23,42,0.82))"
+                "linear-gradient(to right, rgba(2,6,23,0.96), rgba(15,23,42,0.85))"
+            }}
+          />
+
+          {/* DOT GRID PATTERN */}
+          <Box
+            sx={{
+              position: "absolute",
+              inset: 0,
+              backgroundImage:
+                "radial-gradient(rgba(255,255,255,0.06) 1px, transparent 1px)",
+              backgroundSize: "26px 26px",
+              maskImage:
+                "radial-gradient(ellipse at center, black 0%, transparent 75%)",
+              WebkitMaskImage:
+                "radial-gradient(ellipse at center, black 0%, transparent 75%)",
+              zIndex: 1
+            }}
+          />
+
+          {/* DECORATIVE GLOW - TOP LEFT */}
+          <Box
+            sx={{
+              position: "absolute",
+              top: "-12%",
+              left: "8%",
+              width: "420px",
+              height: "420px",
+              borderRadius: "50%",
+              background:
+                "radial-gradient(circle, rgba(66,165,245,0.22) 0%, transparent 70%)",
+              filter: "blur(50px)",
+              zIndex: 1,
+              animation: "floatA 8s ease-in-out infinite",
+              "@keyframes floatA": {
+                "0%, 100%": { transform: "translate(0,0)" },
+                "50%": { transform: "translate(30px,20px)" }
+              }
+            }}
+          />
+
+          {/* DECORATIVE GLOW - BOTTOM RIGHT */}
+          <Box
+            sx={{
+              position: "absolute",
+              bottom: "-18%",
+              right: "8%",
+              width: "480px",
+              height: "480px",
+              borderRadius: "50%",
+              background:
+                "radial-gradient(circle, rgba(30,136,229,0.18) 0%, transparent 70%)",
+              filter: "blur(60px)",
+              zIndex: 1,
+              animation: "floatB 10s ease-in-out infinite",
+              "@keyframes floatB": {
+                "0%, 100%": { transform: "translate(0,0)" },
+                "50%": { transform: "translate(-25px,-25px)" }
+              }
+            }}
+          />
+
+          {/* SMALL CENTER GLOW BEHIND CONTENT */}
+          <Box
+            sx={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%,-50%)",
+              width: "600px",
+              height: "300px",
+              background:
+                "radial-gradient(ellipse, rgba(66,165,245,0.08) 0%, transparent 70%)",
+              filter: "blur(40px)",
+              zIndex: 1
             }}
           />
 
           <Container sx={{ position: "relative", zIndex: 2 }}>
-            <Grid container spacing={5} alignItems="center">
+            <Grid container spacing={5} alignItems="center" justifyContent="center">
 
-              {/* LEFT */}
-              <Grid item xs={12} md={6}>
+              {/* LEFT / MAIN CONTENT */}
+              <Grid
+                item
+                xs={12}
+                md={9}
+                lg={7}
+                sx={{
+                  width: "100%",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  textAlign: "center"
+                }}
+              >
 
+                {/* BADGE */}
                 <Typography
                   sx={{
-                    display: "inline-block",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: 1.2,
                     px: 2.5,
                     py: 1,
                     borderRadius: "30px",
-                    background: "rgba(66,165,245,0.12)",
+                    background:
+                      "linear-gradient(135deg, rgba(66,165,245,0.14), rgba(30,136,229,0.06))",
                     color: "#90caf9",
-                    border: "1px solid rgba(144,202,249,0.18)",
-                    backdropFilter: "blur(8px)",
-                    mb: 2,
+                    border: "1px solid rgba(144,202,249,0.3)",
+                    backdropFilter: "blur(10px)",
+                    mb: 3.5,
                     mt: 3,
                     fontWeight: "600",
-                    letterSpacing: "0.5px"
+                    fontSize: "13px",
+                    letterSpacing: "1.2px",
+                    textTransform: "uppercase",
+                    textAlign: "center",
+                    boxShadow: "0 4px 24px rgba(66,165,245,0.2)"
                   }}
                 >
+                  <Box
+                    component="span"
+                    sx={{
+                      position: "relative",
+                      width: "8px",
+                      height: "8px",
+                      borderRadius: "50%",
+                      background: "#42a5f5",
+                      display: "inline-block",
+                      "&::after": {
+                        content: '""',
+                        position: "absolute",
+                        inset: 0,
+                        borderRadius: "50%",
+                        background: "#42a5f5",
+                        animation: "pulseRing 1.8s ease-out infinite"
+                      },
+                      "@keyframes pulseRing": {
+                        "0%": { transform: "scale(1)", opacity: 0.8 },
+                        "100%": { transform: "scale(3)", opacity: 0 }
+                      }
+                    }}
+                  />
                   AI Recruitment Platform
                 </Typography>
 
+                {/* HEADING */}
                 <Typography
                   variant="h2"
                   fontWeight="900"
                   sx={{
-                    lineHeight: 1.15,
+                    lineHeight: 1.12,
                     mb: 3,
+                    width: "100%",
                     fontSize: {
-                      xs: "2.7rem",
-                      md: "4rem"
+                      xs: "2.5rem",
+                      sm: "3.4rem",
+                      md: "4.5rem"
                     },
-                    background:
-                      "linear-gradient(135deg,#ffffff,#cbd5e1)",
+                    letterSpacing: "-1.5px",
+                    backgroundImage:
+                      "linear-gradient(100deg,#ffffff 20%,#bfe0ff 45%,#42a5f5 65%,#ffffff 90%)",
+                    backgroundSize: "200% auto",
                     WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent"
+                    WebkitTextFillColor: "transparent",
+                    textAlign: "center",
+                    animation: "shine 6s linear infinite",
+                    "@keyframes shine": {
+                      "0%": { backgroundPosition: "0% center" },
+                      "100%": { backgroundPosition: "200% center" }
+                    }
                   }}
                 >
                   Hire Smarter <br />
                   With AI Automation
                 </Typography>
 
+                {/* SUBTEXT */}
                 <Typography
                   sx={{
-                    color: "#cbd5e1",
-                    lineHeight: 2,
-                    maxWidth: "550px",
-                    mb: 4,
-                    fontSize: "16px"
+                    color: "#a8b8cc",
+                    lineHeight: 1.9,
+                    maxWidth: "600px",
+                    width: "100%",
+                    mb: 5,
+                    fontSize: { xs: "15px", md: "17.5px" },
+                    fontWeight: 400,
+                    textAlign: "center",
+                    mx: "auto"
                   }}
                 >
                   Smart recruitment system that helps companies
@@ -389,10 +523,12 @@ export default function Home() {
                 {/* HERO BUTTONS */}
                 <Box
                   sx={{
-                    mt: 5,
+                    mb: 6,
+                    width: "100%",
                     display: "flex",
                     gap: 2.5,
-                    flexWrap: "wrap"
+                    flexWrap: "wrap",
+                    justifyContent: "center"
                   }}
                 >
 
@@ -401,24 +537,26 @@ export default function Home() {
                     id="demo-btn-hero"
                     variant="contained"
                     sx={{
-                      px: 4,
-                      py: 1.5,
+                      px: 5,
+                      py: 1.7,
                       borderRadius: "14px",
                       background:
                         "linear-gradient(135deg,#1976d2,#42a5f5)",
                       color: "#fff",
                       fontWeight: "bold",
+                      fontSize: "15px",
                       letterSpacing: "0.4px",
+                      textTransform: "none",
                       transition: "all 0.35s ease",
                       position: "relative",
                       overflow: "hidden",
                       boxShadow:
-                        "0 10px 30px rgba(66,165,245,0.25)",
+                        "0 10px 35px rgba(66,165,245,0.4)",
 
                       "&:hover": {
                         transform: "translateY(-4px) scale(1.04)",
                         boxShadow:
-                          "0 15px 35px rgba(66,165,245,0.45)",
+                          "0 18px 40px rgba(66,165,245,0.55)",
                         background:
                           "linear-gradient(135deg,#1565c0,#1e88e5)"
                       },
@@ -431,7 +569,7 @@ export default function Home() {
                         width: "100%",
                         height: "100%",
                         background:
-                          "linear-gradient(120deg, transparent, rgba(255,255,255,0.25), transparent)",
+                          "linear-gradient(120deg, transparent, rgba(255,255,255,0.3), transparent)",
                         transition: "0.6s"
                       },
 
@@ -449,25 +587,27 @@ export default function Home() {
                     variant="outlined"
                     size="large"
                     sx={{
-                      px: 4,
-                      py: 1.5,
+                      px: 5,
+                      py: 1.7,
                       borderRadius: "14px",
                       color: "#e2e8f0",
-                      border: "1px solid rgba(255,255,255,0.18)",
-                      background: "rgba(255,255,255,0.03)",
-                      backdropFilter: "blur(10px)",
+                      border: "1px solid rgba(255,255,255,0.25)",
+                      background: "rgba(255,255,255,0.04)",
+                      backdropFilter: "blur(12px)",
                       fontWeight: "bold",
+                      fontSize: "15px",
                       letterSpacing: "0.5px",
+                      textTransform: "none",
                       transition: "all 0.35s ease",
 
                       "&:hover": {
                         background:
-                          "rgba(66,165,245,0.12)",
+                          "rgba(66,165,245,0.14)",
                         borderColor: "#42a5f5",
                         color: "#90caf9",
                         transform: "translateY(-4px) scale(1.04)",
                         boxShadow:
-                          "0 12px 30px rgba(66,165,245,0.18)"
+                          "0 14px 32px rgba(66,165,245,0.2)"
                       },
 
                       "&:active": {
@@ -479,82 +619,20 @@ export default function Home() {
                     Browse Jobs
                   </Button>
                 </Box>
-              </Grid>
 
-              {/* RIGHT CARD */}
-              <Grid item xs={12} md={6}>
+                {/* SCROLL / DIVIDER ACCENT */}
                 <Box
                   sx={{
-                    p: 4,
-                    borderRadius: "30px",
+                    width: "60px",
+                    height: "4px",
+                    borderRadius: "10px",
                     background:
-                      "rgba(15,23,42,0.72)",
-                    backdropFilter: "blur(20px)",
-                    border:
-                      "1px solid rgba(255,255,255,0.08)",
-                    boxShadow:
-                      "0 25px 60px rgba(0,0,0,0.45)"
+                      "linear-gradient(90deg, transparent, #42a5f5, transparent)",
+                    opacity: 0.7
                   }}
-                >
-                  <Typography
-                    variant="h5"
-                    fontWeight="bold"
-                    mb={4}
-                    color="#fff"
-                  >
-                    Recruitment Analytics
-                  </Typography>
+                />
 
-                  <Grid container spacing={3}>
-                    {[
-                      ["50K+", "Candidates"],
-                      ["12K+", "Jobs"],
-                      ["500+", "Companies"],
-                      ["94%", "Success"]
-                    ].map((item, i) => (
-                      <Grid item xs={6} key={i}>
-                        <Box
-                          sx={{
-                            p: 3,
-                            borderRadius: "22px",
-                            background:
-                              "rgba(255,255,255,0.04)",
-                            border:
-                              "1px solid rgba(255,255,255,0.05)",
-                            textAlign: "center",
-                            transition: "0.35s ease",
-
-                            "&:hover": {
-                              transform: "translateY(-6px)",
-                              background:
-                                "rgba(66,165,245,0.08)",
-                              boxShadow:
-                                "0 15px 30px rgba(66,165,245,0.12)"
-                            }
-                          }}
-                        >
-                          <Typography
-                            variant="h4"
-                            fontWeight="bold"
-                            color="#42a5f5"
-                          >
-                            {item[0]}
-                          </Typography>
-
-                          <Typography
-                            sx={{
-                              color: "#94a3b8",
-                              mt: 1
-                            }}
-                          >
-                            {item[1]}
-                          </Typography>
-                        </Box>
-                      </Grid>
-                    ))}
-                  </Grid>
-                </Box>
-              </Grid>
+              </Grid>             
             </Grid>
           </Container>
         </Box>
