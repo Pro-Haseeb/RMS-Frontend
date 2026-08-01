@@ -172,19 +172,7 @@ export default function JobsPage() {
               <MenuItem value="New York">New York</MenuItem>
               <MenuItem value="Austin">Austin</MenuItem>
             </TextField>
-            <TextField
-              select
-              variant="standard"
-              value={experience}
-              onChange={(e) => setExperience(e.target.value)}
-              InputProps={{ disableUnderline: true, sx: { color: "white" } }}
-              sx={{ minWidth: { xs: "100%", sm: 120 }, "& .MuiSelect-select": { color: "#fff" } }}
-            >
-              <MenuItem value="Any">Any Level</MenuItem>
-              <MenuItem value="Entry">Entry</MenuItem>
-              <MenuItem value="Mid">Mid</MenuItem>
-              <MenuItem value="Senior">Senior</MenuItem>
-            </TextField>
+           
             <Button variant="contained" sx={{ borderRadius: "12px", px: 4, background: "linear-gradient(135deg,#1976d2,#42a5f5)", width: { xs: "100%", sm: "auto" } }}>
               Search
             </Button>

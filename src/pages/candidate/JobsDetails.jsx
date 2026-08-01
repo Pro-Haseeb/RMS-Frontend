@@ -33,92 +33,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { getSingleJob } from "../../services/CandidateApi";
 import { applyJob } from "../../services/ApplicationApi";
 
-const mockJobDetails = [
-  {
-    id: 0,
-    title: "Senior Frontend Engineer",
-    company: "TechNova Inc.",
-    location: "San Francisco, CA",
-    salary: "$130k - $160k",
-    experience: "5+ years",
-    level: "Senior",
-    type: ["Full Time", "Hybrid", "Remote"],
-    deadline: "Apply by June 8, 2026",
-    badge: "AI Match 92%",
-    description:
-      "Lead the UI evolution for our AI recruitment platform, creating fluid user experiences and polished interfaces for talent acquisition products.",
-    responsibilities: [
-      "Design high-performance frontend interfaces with React and MUI.",
-      "Collaborate with AI product teams to translate data insights into polished experiences.",
-      "Deliver scalable components with attention to accessibility and performance.",
-      "Own the deployment pipeline for client-facing job dashboards."
-    ],
-    requirements: [
-      "5+ years building modern React applications.",
-      "Deep experience with Material UI and theme-driven design.",
-      "Strong understanding of animation, motion and interaction design.",
-      "Comfort with collaborative sprint cycles and agile workflows."
-    ],
-    skills: ["React.js", "TypeScript", "MUI", "Framer Motion", "API Integration", "Design Systems"],
-    benefits: [
-      "Flexible remote-first culture.",
-      "Health, dental, and vision coverage.",
-      "Generous parental leave and equity grants.",
-      "Professional development stipend and mentoring."
-    ],
-    overview:
-      "TechNova is an AI-first recruitment studio building premium tools for talent discovery, hiring automation, and recruiter workflows.",
-    recruiter: {
-      name: "Ava Morgan",
-      title: "Lead Talent Partner",
-      email: "ava.morgan@technova.ai"
-    },
-    bgImage:
-      "https://plus.unsplash.com/premium_photo-1663023612721-e588768ef403?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjA1fHxjb2Rpbmd8ZW58MHx8MHx8fDA%3D"
-  },
-  {
-    id: 1,
-    title: "AI/ML Engineer",
-    company: "DeepMind Solutions",
-    location: "New York, NY",
-    salary: "$140k - $180k",
-    experience: "3+ years",
-    level: "Mid",
-    type: ["Full Time", "Remote"],
-    deadline: "Apply by June 12, 2026",
-    badge: "AI Match 88%",
-    description:
-      "Build and optimize intelligent hiring systems that learn from candidate interactions and deliver exceptional recruiter recommendations.",
-    responsibilities: [
-      "Develop ML models for resume matching and candidate scoring.",
-      "Work with engineering to productionize AI pipelines.",
-      "Monitor model performance and iterate on training feedback loops.",
-      "Collaborate with product and design teams on intelligent workflows."
-    ],
-    requirements: [
-      "3+ years experience with machine learning and Python.",
-      "Familiarity with NLP and recommendation systems.",
-      "Strong problem solving and experimentation mindset.",
-      "Experience with cloud ML tooling and data pipelines."
-    ],
-    skills: ["Python", "TensorFlow", "PyTorch", "NLP", "Data Engineering", "SQL"],
-    benefits: [
-      "Remote-first work environment.",
-      "Competitive equity and bonus plan.",
-      "Learning budget and conference support.",
-      "Weekly wellness stipends and flexibility."
-    ],
-    overview:
-      "DeepMind Solutions builds recruiter intelligence platforms that convert hiring data into business insights and talent predictions.",
-    recruiter: {
-      name: "Leo Carter",
-      title: "Talent Acquisition Lead",
-      email: "leo.carter@deepmind.ai"
-    },
-    bgImage:
-      "https://media.istockphoto.com/id/2212652208/photo/close-up-of-hands-typing-on-a-laptop-with-glowing-programming-code-and-binary-graphics.webp?a=1&b=1&s=612x612&w=0&k=20&c=GUD1hJ1KhVe3NiWY87jpz1aNuqFZItMuvkGSVQ8bqkY="
-  }
-];
+
 
 export default function JobDetails() {
   const navigate = useNavigate();
@@ -153,12 +68,8 @@ export default function JobDetails() {
     const fetchJobData = async () => {
       try {
         setLoading(true);
-        // If the ID matches a short numeric index, pull from mock array
-        const mockIdx = Number(id);
-        if (!isNaN(mockIdx) && mockIdx < mockJobDetails.length) {
-          setJob(mockJobDetails[mockIdx]);
-          return;
-        }
+       
+        
 
         // Otherwise, fetch from live backend API
         const res = await getSingleJob(id);
@@ -651,84 +562,7 @@ export default function JobDetails() {
         </Container>
       </Box>
 
-      {/* EXTRA DETAILS SECTION */}
-      <Container sx={{ py: 8, position: "relative", zIndex: 5 }}>
-        <Grid container spacing={4}>
-          {/* RESPONSIBILITIES */}
-          <Grid item xs={12} md={6}>
-            <Card sx={{ height: "100%", borderRadius: "30px", background: "rgba(15,23,42,0.62)", border: "1px solid rgba(255,255,255,0.08)", backdropFilter: "blur(20px)" }}>
-              <CardContent sx={{ p: 4 }}>
-                <Typography variant="h5" sx={{ fontWeight: 900, mb: 4, color: "#60a5fa" }}>
-                  Responsibilities
-                </Typography>
-                {job.responsibilities.map((item, i) => (
-                  <Box key={i} sx={{ display: "flex", gap: 2, mb: 3, alignItems: "flex-start" }}>
-                    <CheckCircleOutlineRoundedIcon sx={{ color: "#2563eb", mt: "3px" }} />
-                    <Typography sx={{ color: "#cbd5e1", lineHeight: 1.8 }}>{item}</Typography>
-                  </Box>
-                ))}
-              </CardContent>
-            </Card>
-          </Grid>
-
-          {/* REQUIREMENTS */}
-          <Grid item xs={12} md={6}>
-            <Card sx={{ height: "100%", borderRadius: "30px", background: "rgba(15,23,42,0.62)", border: "1px solid rgba(255,255,255,0.08)", backdropFilter: "blur(20px)" }}>
-              <CardContent sx={{ p: 4 }}>
-                <Typography variant="h5" sx={{ fontWeight: 900, mb: 4, color: "#60a5fa" }}>
-                  Requirements
-                </Typography>
-                {job.requirements.map((item, i) => (
-                  <Box key={i} sx={{ display: "flex", gap: 2, mb: 3, alignItems: "flex-start" }}>
-                    <CheckCircleOutlineRoundedIcon sx={{ color: "#2563eb", mt: "3px" }} />
-                    <Typography sx={{ color: "#cbd5e1", lineHeight: 1.8 }}>{item}</Typography>
-                  </Box>
-                ))}
-              </CardContent>
-            </Card>
-          </Grid>
-
-          {/* SKILLS */}
-          <Grid item xs={12}>
-            <Card sx={{ borderRadius: "30px", background: "rgba(15,23,42,0.62)", border: "1px solid rgba(255,255,255,0.08)", backdropFilter: "blur(20px)" }}>
-              <CardContent sx={{ p: 4 }}>
-                <Typography variant="h5" sx={{ fontWeight: 900, mb: 4, color: "#60a5fa" }}>
-                  Skills Required
-                </Typography>
-                <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
-                  {job.skills.map((skill) => (
-                    <Chip
-                      key={skill}
-                      label={skill}
-                      sx={{ background: "rgba(37,99,235,0.15)", color: "#fff", border: "1px solid rgba(37,99,235,0.4)", fontWeight: 600, px: 1, py: 1.5 }}
-                    />
-                  ))}
-                </Box>
-              </CardContent>
-            </Card>
-          </Grid>
-
-          {/* BENEFITS */}
-          <Grid item xs={12}>
-            <Card sx={{ borderRadius: "30px", background: "rgba(15,23,42,0.62)", border: "1px solid rgba(255,255,255,0.08)", backdropFilter: "blur(20px)" }}>
-              <CardContent sx={{ p: 4 }}>
-                <Typography variant="h5" sx={{ fontWeight: 900, mb: 4, color: "#60a5fa" }}>
-                  Benefits & Perks
-                </Typography>
-                <Grid container spacing={3}>
-                  {job.benefits.map((item, i) => (
-                    <Grid item xs={12} md={6} key={i}>
-                      <Box sx={{ p: 3, borderRadius: "22px", background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}>
-                        <Typography sx={{ color: "#cbd5e1", lineHeight: 1.8 }}>{item}</Typography>
-                      </Box>
-                    </Grid>
-                  ))}
-                </Grid>
-              </CardContent>
-            </Card>
-          </Grid>
-        </Grid>
-      </Container>
+  
 
       {/* SNACKBAR ALERTS */}
       <Snackbar
