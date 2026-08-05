@@ -1,8 +1,17 @@
 import React, { useState } from "react";
-import { Box, TextField, Button, Typography } from "@mui/material";
+import {
+  Box, TextField, Button, Typography, MenuItem,
+  Checkbox,
+  ListItemText,
+  Select,
+  FormControl,
+  InputLabel,
+  OutlinedInput
+} from "@mui/material";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { createJob } from "../../services/CompanyApi.js";
+import { allSkills, skillCategories } from "../../constants/skills.js";
 
 const glassInputStyle = {
   "& .MuiOutlinedInput-root": {
@@ -18,11 +27,26 @@ const glassInputStyle = {
   mb: 3
 };
 
+// const skills = [
+//   "React",
+//   "Node.js",
+//   "MongoDB",
+//   "Express.js",
+//   "JavaScript",
+//   "TypeScript",
+//   "HTML",
+//   "CSS",
+//   "Python",
+//   "Java",
+//   "C++",
+// ];
+
 const initialForm = {
   title: "",
   description: "",
-  skills: "",
+  skills: [],
   degree: "",
+  category: "",
   experienceLevel: "",
   location: "",
   salary: "",
@@ -35,7 +59,16 @@ export default function CreateJob() {
   const [submitting, setSubmitting] = useState(false);
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+
+    console.log("Name:", name);
+    console.log("Value:", value);
+    console.log("Is Array:", Array.isArray(value));
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]: name === "skills" ? value : value,
+    }));
   };
 
   const handleSubmit = async (e) => {
@@ -50,7 +83,8 @@ export default function CreateJob() {
       const payload = {
         title: formData.title.trim(),
         description: formData.description.trim(),
-        skills: formData.skills,
+        skills: formData.skills.join(","),
+        category: formData.category,
         experienceLevel: formData.experienceLevel
           ? `${formData.experienceLevel} years`
           : undefined,
@@ -115,15 +149,39 @@ export default function CreateJob() {
           />
 
           <TextField
+            select
             fullWidth
-            name="skills"
-            label="Required Skills (Comma separated)"
-            value={formData.skills}
+            name="category"
+            label="Job Category"
+            value={formData.category}
             onChange={handleChange}
-            sx={glassInputStyle}
-            placeholder="e.g. React, Node.js, MongoDB"
-          />
+          >
+            {Object.keys(skillCategories).map((category) => (
+              <MenuItem key={category} value={category}>
+                {category}
+              </MenuItem>
+            ))}
+          </TextField>
 
+          <FormControl fullWidth>
+            <InputLabel>Required Skills</InputLabel>
+
+            <Select
+              multiple
+              name="skills"
+              value={formData.skills}
+              onChange={handleChange}
+              input={<OutlinedInput label="Required Skills" />}
+              renderValue={(selected) => selected.join(", ")}
+            >
+              {(skillCategories[formData.category] || []).map((skill) => (
+                <MenuItem key={skill} value={skill}>
+                  <Checkbox checked={formData.skills.includes(skill)} />
+                  <ListItemText primary={skill} />
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
           <TextField
             fullWidth
             name="degree"
