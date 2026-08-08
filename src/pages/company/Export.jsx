@@ -38,6 +38,7 @@ import {
 
 import { exportApplications, getExportHistory, downloadExportFile } from "../../services/CompanyApi";
 import { getAllJobs } from "../../services/CandidateApi";
+import { getCompanyApplications } from "../../services/ApplicationApi";
 
 function GlassCard({ children, sx = {} }) {
   return (
@@ -119,21 +120,53 @@ export default function Export() {
     const fetchData = async () => {
       try {
         setError(null);
-        console.log("Fetching jobs...");
-        const jobsRes = await getAllJobs();
-        console.log("Jobs response:", jobsRes);
-        setJobs(Array.isArray(jobsRes?.data) ? jobsRes.data : []);
-        
-        console.log("Fetching export history...");
+
+        const userStr = localStorage.getItem("user");
+        const user = userStr ? JSON.parse(userStr) : null;
+        let userCompanyId = String(
+          user?.company?._id || user?.company || user?.companyId || ""
+        );
+
+        const [jobsRes, appsRes] = await Promise.all([
+          getAllJobs(),
+          getCompanyApplications().catch(() => ({ data: [] })),
+        ]);
+
+        const allJobs = Array.isArray(jobsRes?.data) ? jobsRes.data : [];
+        const companyApps = Array.isArray(appsRes?.data) ? appsRes.data : [];
+
+        if (!userCompanyId && companyApps.length > 0) {
+          userCompanyId = String(
+            companyApps[0].company?._id || companyApps[0].company || ""
+          );
+        }
+
+        if (!userCompanyId && allJobs.length > 0 && user) {
+          const matchingJob = allJobs.find((job) => {
+            const creatorId = String(job.createdBy?._id || job.createdBy || "");
+            return creatorId === String(user._id) || String(job.createdBy?.email || "") === String(user.email || "");
+          });
+          if (matchingJob) {
+            userCompanyId = String(matchingJob.company?._id || matchingJob.company || "");
+          }
+        }
+
+        const companyJobs = allJobs.filter((job) => {
+          const jobCompanyId = String(job.company?._id || job.company || "");
+          return jobCompanyId && jobCompanyId === userCompanyId;
+        });
+
+        setJobs(companyJobs);
+
         const historyRes = await getExportHistory();
-        console.log("Export history response:", historyRes);
-        console.log("Export history data:", historyRes?.data);
         setExportHistory(historyRes?.data?.data || []);
       } catch (error) {
         console.error("Error fetching data:", error);
+
         setError(error?.message || "Failed to load data");
         setJobs([]);
         setExportHistory([]);
+
         setToast({
           open: true,
           message: "Failed to load data",
@@ -283,7 +316,7 @@ export default function Export() {
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 4 }}>
       {/* Debug Info */}
-      <Box sx={{
+      {/* <Box sx={{
         p: 2,
         borderRadius: "12px",
         backgroundColor: "rgba(99, 102, 241, 0.1)",
@@ -292,10 +325,10 @@ export default function Export() {
         <Typography sx={{ color: "#6366f1", fontSize: "12px", fontFamily: "monospace" }}>
           DEBUG: {JSON.stringify({ jobs: jobs.length, exports: exportHistory.length, loading: historyLoading }, null, 2)}
         </Typography>
-      </Box>
+      </Box> */}
 
       {/* Error Display */}
-      {error && (
+      {/* {error && (
         <Box sx={{
           p: 2,
           borderRadius: "12px",
@@ -306,7 +339,7 @@ export default function Export() {
             ⚠️ {error}
           </Typography>
         </Box>
-      )}
+      )} */}
 
       {/* Header */}
       <motion.div
@@ -362,16 +395,21 @@ export default function Export() {
             <Grid item xs={12} sm={6} md={4}>
               <FormControl fullWidth size="small">
                 <InputLabel
+                  shrink
                   sx={{
-                    color: "#94a3b8 !important",
+                    color: "#94a3b8",
                     fontSize: "13px",
+                    backgroundColor: "#0b1020",
+                    px: 0.5,
+
                     "&.Mui-focused": {
-                      color: "#a78bfa !important",
+                      color: "#a78bfa",
                     },
                   }}
                 >
                   Status
                 </InputLabel>
+
                 <Select
                   value={filters.status}
                   onChange={handleFilterChange("status")}
@@ -379,26 +417,30 @@ export default function Export() {
                   sx={{
                     color: "#e2e8f0",
                     backgroundColor: "rgba(255, 255, 255, 0.02)",
-                    border: "1px solid rgba(255, 255, 255, 0.08)",
                     borderRadius: "8px",
+
                     "& .MuiOutlinedInput-notchedOutline": {
-                      borderColor: "transparent",
+                      borderColor: "rgba(255, 255, 255, 0.08)",
                     },
+
                     "&:hover .MuiOutlinedInput-notchedOutline": {
                       borderColor: "rgba(255, 255, 255, 0.12)",
                     },
+
                     "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
                       borderColor: "#a78bfa",
                     },
+
                     "& .MuiSvgIcon-root": {
                       color: "#a78bfa",
                     },
                   }}
                 >
-                  <MenuItem value="">No Status</MenuItem>
-                  <MenuItem value="pending">Applied</MenuItem>
+                  <MenuItem value="">All Status</MenuItem>
+                  <MenuItem value="pending">Pending</MenuItem>
                   <MenuItem value="shortlisted">Shortlisted</MenuItem>
                   <MenuItem value="rejected">Rejected</MenuItem>
+                  <MenuItem value="hired">Hired</MenuItem>
                 </Select>
               </FormControl>
             </Grid>
@@ -407,9 +449,12 @@ export default function Export() {
             <Grid item xs={12} sm={6} md={4}>
               <FormControl fullWidth size="small">
                 <InputLabel
+                  shrink
                   sx={{
                     color: "#94a3b8 !important",
                     fontSize: "13px",
+                    backgroundColor: "#0b1020",
+                    px: 0.5,
                     "&.Mui-focused": {
                       color: "#a78bfa !important",
                     },
@@ -417,6 +462,7 @@ export default function Export() {
                 >
                   Job
                 </InputLabel>
+
                 <Select
                   value={filters.jobId}
                   onChange={handleFilterChange("jobId")}
@@ -426,26 +472,36 @@ export default function Export() {
                     backgroundColor: "rgba(255, 255, 255, 0.02)",
                     border: "1px solid rgba(255, 255, 255, 0.08)",
                     borderRadius: "8px",
+
                     "& .MuiOutlinedInput-notchedOutline": {
                       borderColor: "transparent",
                     },
+
                     "&:hover .MuiOutlinedInput-notchedOutline": {
                       borderColor: "rgba(255, 255, 255, 0.12)",
                     },
+
                     "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
                       borderColor: "#a78bfa",
                     },
+
                     "& .MuiSvgIcon-root": {
                       color: "#a78bfa",
+                    },
+
+                    "& .MuiSelect-select": {
+                      paddingTop: "10px",
+                      paddingBottom: "10px",
                     },
                   }}
                 >
                   <MenuItem value="">All Jobs</MenuItem>
-                  {jobs.map((job) => (
-                    <MenuItem key={job._id} value={job._id}>
-                      {job.title}
-                    </MenuItem>
-                  ))}
+
+            {jobs.map((job) => (
+  <MenuItem key={job._id} value={job._id}>
+    {job.title}
+  </MenuItem>
+))}
                 </Select>
               </FormControl>
             </Grid>
@@ -509,30 +565,51 @@ export default function Export() {
                     color: "#e2e8f0",
                     backgroundColor: "rgba(255, 255, 255, 0.02)",
                     borderRadius: "8px",
+
                     "& fieldset": {
                       borderColor: "rgba(255, 255, 255, 0.08)",
                     },
+
                     "&:hover fieldset": {
                       borderColor: "rgba(255, 255, 255, 0.12)",
                     },
+
                     "&.Mui-focused fieldset": {
                       borderColor: "#a78bfa",
                     },
                   },
+
                   "& .MuiInputBase-input": {
                     fontSize: "13px",
+                    paddingTop: "12px",
+                    paddingBottom: "12px",
                   },
-                  "& label": {
+
+                  "& .MuiInputLabel-root": {
                     color: "#94a3b8",
                     fontSize: "13px",
-                    "&.Mui-focused": {
-                      color: "#a78bfa",
-                    },
+                    backgroundColor: "#0b1020",
+                    padding: "0 5px",
+                  },
+
+                  "& .MuiInputLabel-shrink": {
+                    color: "#94a3b8",
+                    transform: "translate(14px, -9px) scale(0.75)",
+                  },
+
+                  "& .MuiInputLabel-root.Mui-focused": {
+                    color: "#a78bfa",
+                  },
+
+                  "& input[type='date']::-webkit-calendar-picker-indicator": {
+                    filter: "invert(1)",
+                    cursor: "pointer",
                   },
                 }}
               />
             </Grid>
 
+            {/* Date To */}
             {/* Date To */}
             <Grid item xs={12} sm={6} md={4}>
               <TextField
@@ -548,30 +625,50 @@ export default function Export() {
                     color: "#e2e8f0",
                     backgroundColor: "rgba(255, 255, 255, 0.02)",
                     borderRadius: "8px",
+
                     "& fieldset": {
                       borderColor: "rgba(255, 255, 255, 0.08)",
                     },
+
                     "&:hover fieldset": {
                       borderColor: "rgba(255, 255, 255, 0.12)",
                     },
+
                     "&.Mui-focused fieldset": {
                       borderColor: "#a78bfa",
                     },
                   },
+
                   "& .MuiInputBase-input": {
                     fontSize: "13px",
+                    paddingTop: "12px",
+                    paddingBottom: "12px",
                   },
-                  "& label": {
+
+                  "& .MuiInputLabel-root": {
                     color: "#94a3b8",
                     fontSize: "13px",
-                    "&.Mui-focused": {
-                      color: "#a78bfa",
-                    },
+                    backgroundColor: "#0b1020",
+                    padding: "0 5px",
+                  },
+
+                  "& .MuiInputLabel-shrink": {
+                    color: "#94a3b8",
+                    transform: "translate(14px, -9px) scale(0.75)",
+                  },
+
+                  "& .MuiInputLabel-root.Mui-focused": {
+                    color: "#a78bfa",
+                  },
+
+                  "& input[type='date']::-webkit-calendar-picker-indicator": {
+                    filter: "invert(1)",
+                    cursor: "pointer",
                   },
                 }}
               />
+            </Grid>          
             </Grid>
-          </Grid>
 
           {/* Export Button */}
           <Box sx={{ display: "flex", gap: 2 }}>
@@ -778,8 +875,8 @@ export default function Export() {
               toast.severity === "success"
                 ? "#10b981"
                 : toast.severity === "error"
-                ? "#ef4444"
-                : "#f59e0b",
+                  ? "#ef4444"
+                  : "#f59e0b",
           }}
         >
           {toast.message}

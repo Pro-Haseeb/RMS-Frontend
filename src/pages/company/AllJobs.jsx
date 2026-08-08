@@ -149,13 +149,13 @@ export default function AllJobs() {
         let filteredJobs = [];
         if (myCompanyId) {
           filteredJobs = allJobs.filter((j) => {
-            const cid = j.company?._id || j.company;
-            return cid === myCompanyId;
+            const cid = String(j.company?._id || j.company || "");
+            return cid === String(myCompanyId);
           });
         } else if (user) {
-          filteredJobs = allJobs.filter(j => {
-            const creatorId = j.createdBy?._id || j.createdBy;
-            return creatorId === user._id || j.createdBy?.email === user.email;
+          filteredJobs = allJobs.filter((j) => {
+            const creatorId = String(j.createdBy?._id || j.createdBy || "");
+            return creatorId === String(user._id) || String(j.createdBy?.email || "") === String(user.email || "");
           });
         }
 

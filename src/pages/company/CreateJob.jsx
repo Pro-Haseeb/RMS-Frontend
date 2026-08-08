@@ -154,6 +154,7 @@ export default function CreateJob() {
             name="category"
             label="Job Category"
             value={formData.category}
+            sx={glassInputStyle}
             onChange={handleChange}
           >
             {Object.keys(skillCategories).map((category) => (
@@ -163,7 +164,7 @@ export default function CreateJob() {
             ))}
           </TextField>
 
-          <FormControl fullWidth>
+          <FormControl fullWidth sx={glassInputStyle}>
             <InputLabel>Required Skills</InputLabel>
 
             <Select
@@ -171,7 +172,9 @@ export default function CreateJob() {
               name="skills"
               value={formData.skills}
               onChange={handleChange}
+              
               input={<OutlinedInput label="Required Skills" />}
+              sx={glassInputStyle}
               renderValue={(selected) => selected.join(", ")}
             >
               {(skillCategories[formData.category] || []).map((skill) => (
@@ -224,17 +227,38 @@ export default function CreateJob() {
             placeholder="e.g. 80,000 - 120,000 PKR"
           />
 
-          <TextField
-            fullWidth
-            name="deadline"
-            label="Application Deadline"
-            value={formData.deadline}
-            onChange={handleChange}
-            sx={glassInputStyle}
-            type="date"
-            InputLabelProps={{ shrink: true }}
-          />
+         <Box>
+  <Typography
+    sx={{
+      color: "rgba(255,255,255,0.7)",
+      fontSize: "14px",
+      mb: 1,
+      ml: 0.5,
+    }}
+  >
+    Application Deadline
+  </Typography>
 
+  <TextField
+    fullWidth
+    name="deadline"
+    type="date"
+    value={formData.deadline}
+    onChange={handleChange}
+    sx={{
+      ...glassInputStyle,
+
+      "& .MuiInputBase-input": {
+        color: "#fff",
+      },
+
+      "& input[type='date']::-webkit-calendar-picker-indicator": {
+        filter: "invert(1)",
+        cursor: "pointer",
+      },
+    }}
+  />
+</Box>
           <Button
             type="submit"
             variant="contained"
