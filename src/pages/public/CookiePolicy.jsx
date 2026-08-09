@@ -10,6 +10,7 @@ import {
   Alert,
   Chip
 } from "@mui/material";
+import Footer from "../../components/Footer";
 
 import CookieIcon from "@mui/icons-material/Cookie";
 import ShieldIcon from "@mui/icons-material/Shield";
@@ -232,6 +233,7 @@ export default function CookiePolicy() {
           {toast.msg}
         </Alert>
       </Snackbar>
+    <Footer />
     </Box>
   );
 }

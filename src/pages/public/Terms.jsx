@@ -19,6 +19,7 @@ import {
 import { motion } from "framer-motion";
 
 import { useNavigate } from "react-router-dom";
+import Footer from "../../components/Footer";
 
 import ShieldIcon from "@mui/icons-material/Shield";
 import GavelIcon from "@mui/icons-material/Gavel";
@@ -536,25 +537,7 @@ export default function Terms() {
         </Card>
       </Container>
 
-      {/* ================= FOOTER ================= */}
-
-      <Box
-        sx={{
-          py: 5,
-          borderTop:
-            "1px solid rgba(255,255,255,0.08)",
-          textAlign: "center",
-        }}
-      >
-        <Typography
-          sx={{
-            color: "#94a3b8",
-          }}
-        >
-          © 2026 RecruitAI — AI Recruitment
-          Management System
-        </Typography>
-      </Box>
+      <Footer />
     </Box>
   );
 }

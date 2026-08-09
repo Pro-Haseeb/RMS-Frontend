@@ -2,6 +2,11 @@ import { Route, Routes } from 'react-router-dom';
 import Landing from './pages/public/Landing';
 import About from './pages/public/AboutPage';
 import JobsPage from './pages/public/JobsPage';
+import Contact from './pages/public/Contact';
+import PrivacyPolicy from './pages/public/PrivacyPolicy';
+import Terms from './pages/public/Terms';
+import CookiePolicy from './pages/public/CookiePolicy';
+import RulesAndRegulations from './pages/public/RulesAndRegulations';
 import AuthPage from './pages/AuthPage';
 import Demo from './pages/Demo';
 
@@ -50,6 +55,11 @@ const App = () => {
         <Route path="/home" element={<Landing />} />
         <Route path="/about" element={<About />} />
         <Route path="/jobs" element={<JobsPage />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+        <Route path="/terms" element={<Terms />} />
+        <Route path="/cookie-policy" element={<CookiePolicy />} />
+        <Route path="/rules" element={<RulesAndRegulations />} />
         <Route path="/demo" element={<Demo />} />
         <Route path="/request-demo" element={<Demo />} />
       </Route>

@@ -15,6 +15,7 @@ import {
   CircularProgress
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import Footer from "../../components/Footer";
 import { getAllJobs } from "../../services/CandidateApi";
 
 const bgImages = [
@@ -294,6 +295,7 @@ export default function JobsPage() {
           </Grid>
         </Box>
       </Container>
+    <Footer />
     </Box>
   );
 }

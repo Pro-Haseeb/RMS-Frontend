@@ -1,8 +1,4 @@
-import { useEffect, useRef } from "react";
-import Tilt from "react-parallax-tilt";
 import { motion } from "framer-motion";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import {
   Box,
   Container,
@@ -15,6 +11,7 @@ import {
   Stack,
   IconButton
 } from "@mui/material";
+import Footer from "../../components/Footer";
 import {
 //   Transparency,
   Shield,
@@ -238,56 +235,8 @@ const SectionHeading = ({ label, title, description }) => (
 );
 
 export default function RulesAndRegulations() {
-  const pageRef = useRef(null);
-  const sectionRefs = useRef([]);
-
-  useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
-
-    sectionRefs.current.forEach((section) => {
-      if (!section) return;
-      gsap.fromTo(
-        section,
-        { opacity: 0, y: 60 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 1,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: section,
-            start: "top 85%",
-            toggleActions: "play none none none"
-          }
-        }
-      );
-    });
-
-    const cards = gsap.utils.toArray(".rule-card");
-    cards.forEach((card, index) => {
-      gsap.fromTo(
-        card,
-        { opacity: 0, y: 40, scale: 0.98 },
-        {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          duration: 0.8,
-          ease: "power3.out",
-          delay: index * 0.08,
-          scrollTrigger: {
-            trigger: card,
-            start: "top 90%",
-            toggleActions: "play none none none"
-          }
-        }
-      );
-    });
-  }, []);
-
   return (
     <Box
-      ref={pageRef}
       component={motion.div}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -438,19 +387,18 @@ export default function RulesAndRegulations() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 1.1, delay: 0.1 }}
               >
-                <Tilt glareEnable glareMaxOpacity={0.15} tiltMaxAngleX={8} tiltMaxAngleY={8}>
-                  <Box sx={{ ...glassCard, minHeight: 520, p: 4 }}>
-                    <Box
-                      sx={{
-                        width: "100%",
-                        height: 420,
-                        borderRadius: "34px",
-                        background: "linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02))",
-                        border: "1px solid rgba(255,255,255,0.12)",
-                        overflow: "hidden",
-                        position: "relative"
-                      }}
-                    >
+                <Box sx={{ ...glassCard, minHeight: 520, p: 4 }}>
+                  <Box
+                    sx={{
+                      width: "100%",
+                      height: 420,
+                      borderRadius: "34px",
+                      background: "linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02))",
+                      border: "1px solid rgba(255,255,255,0.12)",
+                      overflow: "hidden",
+                      position: "relative"
+                    }}
+                  >
                       <Box
                         sx={{
                           position: "absolute",
@@ -529,8 +477,7 @@ export default function RulesAndRegulations() {
                       </Box>
                     </Box>
                   </Box>
-                </Tilt>
-              </motion.div>
+                </motion.div>
             </Grid>
           </Grid>
         </Box>
@@ -560,7 +507,6 @@ export default function RulesAndRegulations() {
                     viewport={{ once: true, amount: 0.3 }}
                     transition={{ duration: 0.8, delay: index * 0.08 }}
                   >
-                    <Tilt tiltMaxAngleX={6} tiltMaxAngleY={6} glareEnable glareMaxOpacity={0.1}>
                       <Card
                         sx={{
                           ...glassCard,
@@ -597,7 +543,6 @@ export default function RulesAndRegulations() {
                           </Stack>
                         </CardContent>
                       </Card>
-                    </Tilt>
                   </motion.div>
                 </Grid>
               );
@@ -812,6 +757,7 @@ export default function RulesAndRegulations() {
           </Box>
         </motion.div>
       ))}
+    <Footer />
     </Box>
   </Box>
 </Box>

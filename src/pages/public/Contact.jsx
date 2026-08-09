@@ -29,6 +29,7 @@ import {
   PersonOutlineOutlined
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
+import Footer from "../../components/Footer";
 import { motion } from "framer-motion";
 
 
@@ -1756,6 +1757,7 @@ const errorBoxStyle = (field) => ({
           )}
         </Stack>
       </Box>
+    <Footer />
     </Box>
   </motion.div>
 </Grid>

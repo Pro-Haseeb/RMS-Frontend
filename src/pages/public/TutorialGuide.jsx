@@ -1,5 +1,6 @@
 import React from "react";
 import Joyride from "react-joyride";
+import Footer from "../../components/Footer";
 
 export default function TutorialGuide() {
   const steps = [
@@ -15,18 +16,21 @@ export default function TutorialGuide() {
   ];
 
   return (
-    <Joyride
-      steps={steps}
-      run={true}
-      continuous={true}
-      showSkipButton={true}
-      showProgress={true}
-      styles={{
-        options: {
-          primaryColor: "#1976d2",
-          zIndex: 10000,
-        },
-      }}
-    />
+    <>
+      <Joyride
+        steps={steps}
+        run={true}
+        continuous={true}
+        showSkipButton={true}
+        showProgress={true}
+        styles={{
+          options: {
+            primaryColor: "#1976d2",
+            zIndex: 10000,
+          },
+        }}
+      />
+      <Footer />
+    </>
   );
 }

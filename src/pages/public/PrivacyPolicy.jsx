@@ -1,5 +1,4 @@
 import { useMemo } from "react";
-import Tilt from "react-parallax-tilt";
 import { motion } from "framer-motion";
 
 import {
@@ -46,6 +45,7 @@ import {
   Public,
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
+import Footer from "../../components/Footer";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import TwitterIcon from "@mui/icons-material/Twitter";
 
@@ -401,14 +401,15 @@ export default function PrivacyPolicy() {
 
           {/* RIGHT SIDE */}
           <Grid item xs={12} lg={6}>
-            <Tilt glareEnable glareMaxOpacity={0.3}>
-              <Box
-                sx={{
-                  ...glassStyle,
-                  minHeight: 520,
-                  p: 4
-                }}
-              >
+            <Box
+              sx={{
+                ...glassStyle,
+                minHeight: 520,
+                p: 4,
+                transition: "transform 0.25s ease",
+                '&:hover': { transform: 'translateY(-6px)' }
+              }}
+            >
                 <Box
                   sx={{
                     display: "flex",
@@ -483,7 +484,6 @@ export default function PrivacyPolicy() {
                   ))}
                 </Box>
               </Box>
-            </Tilt>
           </Grid>
         </Grid>
 
@@ -523,14 +523,6 @@ export default function PrivacyPolicy() {
         }}
       >
         <motion.div style={{ width: "100%", display: "flex" }}>
-          <Tilt
-            tiltMaxAngleX={5}
-            tiltMaxAngleY={5}
-            style={{
-              width: "100%",
-              display: "flex"
-            }}
-          >
             <Card
               sx={{
                 ...glassStyle,
@@ -544,7 +536,9 @@ export default function PrivacyPolicy() {
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "flex-start",
-                gap: 1.2
+                gap: 1.2,
+                transition: "transform 0.25s ease",
+                '&:hover': { transform: 'translateY(-6px)' }
               }}
             >
               <Box
@@ -568,7 +562,6 @@ export default function PrivacyPolicy() {
                 {item.description}
               </Typography>
             </Card>
-          </Tilt>
         </motion.div>
       </Grid>
     );
@@ -796,6 +789,7 @@ export default function PrivacyPolicy() {
 
 
       </Container>
+      <Footer />
     </Box>
   );
 }
