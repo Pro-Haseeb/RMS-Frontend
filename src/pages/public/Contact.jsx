@@ -34,6 +34,7 @@ import { motion } from "framer-motion";
 
 
 
+
 const contactDetails = [
   {
     title: "Email Support",

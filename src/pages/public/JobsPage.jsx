@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Country, City } from "country-state-city";
 import {
   AppBar,
   Toolbar,
@@ -63,8 +64,19 @@ export default function JobsPage() {
   const [jobs, setJobs] = useState([]);
   const [hasFetched, setHasFetched] = useState(false);
   const [search, setSearch] = useState("");
-  const [location, setLocation] = useState("Any");
+ const [country, setCountry] = useState("Any");
+const [city, setCity] = useState("Any");
   const [experience, setExperience] = useState("Any");
+
+const countries = Country.getAllCountries();
+
+const selectedCountry = countries.find(
+  (item) => item.isoCode === country
+);
+
+const cities = selectedCountry
+  ? City.getCitiesOfCountry(selectedCountry.isoCode)
+  : [];
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -91,15 +103,19 @@ export default function JobsPage() {
 
   const activeJobs = hasFetched ? jobs : fallbackJobs;
 
-  const filteredJobs = activeJobs.filter((job) => {
-    const title = (job.title || "").toLowerCase();
-    const level = (job.experienceLevel || job.level || "Any").toLowerCase();
-    return (
-      title.includes(search.toLowerCase()) &&
-      (location === "Any" || (job.location || "").toLowerCase() === location.toLowerCase()) &&
-      (experience === "Any" || level === experience.toLowerCase())
-    );
-  });
+const filteredJobs = activeJobs.filter((job) => {
+  const title = (job.title || "").toLowerCase();
+  const level = (job.experienceLevel || job.level || "Any").toLowerCase();
+  const jobLocation = (job.location || "").toLowerCase();
+
+  return (
+    title.includes(search.toLowerCase()) &&
+    (city === "Any" ||
+      jobLocation === city.toLowerCase()) &&
+    (experience === "Any" ||
+      level === experience.toLowerCase())
+  );
+});
 
   return (
     <Box sx={{ background: "#050d18", minHeight: "100vh", color: "white" }}>
@@ -160,19 +176,79 @@ export default function JobsPage() {
               InputProps={{ disableUnderline: true, sx: { color: "white" } }}
               sx={{ input: { color: "#fff" }, flex: 1, minWidth: { xs: "100%", sm: 0 } }}
             />
-            <TextField
-              select
-              variant="standard"
-              value={location}
-              onChange={(e) => setLocation(e.target.value)}
-              InputProps={{ disableUnderline: true, sx: { color: "white" } }}
-              sx={{ minWidth: { xs: "100%", sm: 130 }, "& .MuiSelect-select": { color: "#fff" } }}
-            >
-              <MenuItem value="Any">All Location</MenuItem>
-              <MenuItem value="San Francisco">San Francisco</MenuItem>
-              <MenuItem value="New York">New York</MenuItem>
-              <MenuItem value="Austin">Austin</MenuItem>
-            </TextField>
+           {/* COUNTRY */}
+<TextField
+  select
+  variant="standard"
+  value={country}
+  onChange={(e) => {
+    setCountry(e.target.value);
+    setCity("Any");
+  }}
+  InputProps={{
+    disableUnderline: true,
+    sx: { color: "white" }
+  }}
+  SelectProps={{
+    MenuProps: {
+      PaperProps: {
+        sx: {
+          maxHeight: 400
+        }
+      }
+    }
+  }}
+  sx={{
+    minWidth: { xs: "100%", sm: 180 },
+    "& .MuiSelect-select": {
+      color: "#fff"
+    }
+  }}
+>
+  <MenuItem value="Any">All Countries</MenuItem>
+
+  {countries.map((item) => (
+    <MenuItem key={item.isoCode} value={item.isoCode}>
+      {item.name}
+    </MenuItem>
+  ))}
+</TextField>
+
+{/* CITY */}
+<TextField
+  select
+  variant="standard"
+  value={city}
+  onChange={(e) => setCity(e.target.value)}
+  disabled={country === "Any"}
+  InputProps={{
+    disableUnderline: true,
+    sx: { color: "white" }
+  }}
+  SelectProps={{
+    MenuProps: {
+      PaperProps: {
+        sx: {
+          maxHeight: 400
+        }
+      }
+    }
+  }}
+  sx={{
+    minWidth: { xs: "100%", sm: 180 },
+    "& .MuiSelect-select": {
+      color: "#fff"
+    }
+  }}
+>
+  <MenuItem value="Any">All Cities</MenuItem>
+
+  {cities.map((item) => (
+    <MenuItem key={item.name} value={item.name}>
+      {item.name}
+    </MenuItem>
+  ))}
+</TextField>
            
             <Button variant="contained" sx={{ borderRadius: "12px", px: 4, background: "linear-gradient(135deg,#1976d2,#42a5f5)", width: { xs: "100%", sm: "auto" } }}>
               Search
@@ -182,9 +258,9 @@ export default function JobsPage() {
       </Box>
 
       <Container sx={{ py: 8 }}>
-        <Typography variant="h5" textAlign="center" fontWeight="700" mb={6} sx={{ color: "#fff", letterSpacing: "0.5px" }}>
+        {/* <Typography variant="h5" textAlign="center" fontWeight="700" mb={6} sx={{ color: "#fff", letterSpacing: "0.5px" }}>
           {search ? `${search.charAt(0).toUpperCase() + search.slice(1)} Jobs Found` : `${filteredJobs.length} Jobs Found`}
-        </Typography>
+        </Typography> */}
         <Box sx={{ display: "flex", justifyContent: "center" }}>
           <Grid container spacing={3} sx={{ maxWidth: "1100px", justifyContent: "center" }}>
             {filteredJobs.length === 0 ? (
