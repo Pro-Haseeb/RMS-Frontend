@@ -137,7 +137,6 @@ export default function CandidateDashboard() {
     { title: "Applied Jobs", value: appliedCount.toString(), icon: <Work />, color: "#3b82f6" },
     { title: "Shortlisted", value: shortlistedCount.toString(), icon: <CheckCircle />, color: "#10b981" },
     { title: "Interviews Scheduled", value: interviewCount.toString(), icon: <AccessTime />, color: "#f59e0b" },
-    { title: "Profile Score", value: `${profileCompletion}%`, icon: <Description />, color: "#8b5cf6" },
   ];
 
   const recentActivity = jobs.slice(0, 3).map((j) => ({
@@ -306,36 +305,8 @@ export default function CandidateDashboard() {
             </GlassCard>
           </Grid>
 
-          <Grid item xs={12} md={4}>
-            <GlassCard sx={{ height: "100%" }}>
-              <Typography variant="h6" fontWeight="700" sx={{ mb: 2 }}>
-                Profile Completion
-              </Typography>
-              <Typography sx={{ color: "#94a3b8", mb: 3 }}>
-                Complete your profile details to increase your visibility to premium partner recruiters.
-              </Typography>
-
-              <Box sx={{ mb: 1, display: "flex", justifyContent: "space-between" }}>
-                <Typography fontWeight="600">{profileCompletion}%</Typography>
-                <Typography variant="body2" sx={{ color: "#8b5cf6" }}>
-                  {profileCompletion === 100 ? "Fully Complete!" : "Almost there!"}
-                </Typography>
-              </Box>
-              <LinearProgress
-                value={profileCompletion}
-                variant="determinate"
-                sx={{
-                  height: 10,
-                  borderRadius: 5,
-                  bgcolor: "rgba(255,255,255,0.05)",
-                  "& .MuiLinearProgress-bar": {
-                    borderRadius: 5,
-                    background: "linear-gradient(90deg, #c084fc, #a855f7)",
-                  },
-                }}
-              />
-            </GlassCard>
-          </Grid>
+         
+           
         </Grid>
       </Box>
     </motion.div>
