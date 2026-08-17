@@ -48,21 +48,50 @@ export default function RequestDemo() {
       // Map form field names to what the backend expects
       // client-side sanitization
       const forbidden = /[<>${}]/;
-      if (!form.company || !form.email) {
-        alert("Company name and work email are required");
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      const websiteRegex = /^(https?:\/\/)?(www\.)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(\/.*)?$/;
+
+      if (!form.company || !form.size || !form.email || !form.phone) {
+        alert("Company name, size, official email, and phone number are required");
         return;
       }
+
+      if (!/^[A-Za-z0-9 &.,'-]{2,100}$/.test(form.company.trim())) {
+        alert("Company name must be a valid name.");
+        return;
+      }
+
+      if (!/^\d+$/.test(String(form.size).trim())) {
+        alert("Company size must be numeric only.");
+        return;
+      }
+
+      if (!emailRegex.test(form.email.trim())) {
+        alert("Please enter a valid official email.");
+        return;
+      }
+
+      if (!/^\d{11}$/.test(form.phone.trim())) {
+        alert("Phone number must be 11 digits.");
+        return;
+      }
+
+      if (form.website && !websiteRegex.test(form.website.trim())) {
+        alert("Please enter a valid website URL.");
+        return;
+      }
+
       if (forbidden.test(form.company) || forbidden.test(form.website) || forbidden.test(form.email)) {
         alert("Invalid characters in form fields");
         return;
       }
 
       const payload = {
-        companyName: form.company,
-        website: form.website,
-        companySize: form.size,
-        officialEmail: form.email,
-        contactNumber: form.countryCode + form.phone
+        companyName: form.company.trim(),
+        website: form.website.trim(),
+        companySize: form.size.trim(),
+        officialEmail: form.email.trim(),
+        contactNumber: form.countryCode + form.phone.trim()
       };
 
       const res = await requestDemo(payload);
@@ -91,23 +120,32 @@ export default function RequestDemo() {
     let msg = "";
 
     if (name === "company") {
-      if (value.length > 0 && value.length < 3)
+      if (value.trim() && !/^[A-Za-z0-9 &.,'-]{2,100}$/.test(value.trim()))
+        msg = "Company name must be valid";
+      else if (value.length > 0 && value.length < 3)
         msg = "Company name too short";
     }
 
     if (name === "website") {
-      if (value && !value.includes(".") && !value.includes("www"))
+      if (value && !/^(https?:\/\/)?(www\.)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(\/.*)?$/.test(value.trim()))
         msg = "Invalid website format (example.com)";
     }
 
     if (name === "email") {
-      if (value && !/\S+@\S+\.\S+/.test(value))
+      if (value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim()))
         msg = "Invalid email format";
     }
 
     if (name === "phone") {
       if (value && !/^\d*$/.test(value))
         msg = "Only numbers allowed";
+      else if (value.length > 0 && value.length !== 11)
+        msg = "Phone number must be 11 digits";
+    }
+
+    if (name === "size") {
+      if (value && !/^\d+$/.test(value.trim()))
+        msg = "Company size must be numeric";
     }
 
     setSuggestions({ ...suggestions, [name]: msg });

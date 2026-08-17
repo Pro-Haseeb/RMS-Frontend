@@ -81,10 +81,15 @@ export default function AuthPage() {
   };
 
   const handleSignup = async () => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#\$%\^&\*()_+\-=[\]{};':"\\|,.<>/?]).{8,}$/;
 
     if (!form.name || !form.email || !form.password || !form.confirm) {
       setError("Please fill all fields.");
+      return;
+    }
+    if (!emailRegex.test(form.email.trim())) {
+      setError("Please enter a valid email address.");
       return;
     }
     if (form.password !== form.confirm) {
@@ -99,7 +104,7 @@ export default function AuthPage() {
     try {
       const res = await signupUser({
         name: form.name,
-        email: form.email,
+        email: form.email.trim(),
         password: form.password
       });
 
@@ -114,14 +119,20 @@ export default function AuthPage() {
   };
 
   const handleLogin = async () => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
     if (!form.email || !form.password) {
       setError("Please enter email and password.");
+      return;
+    }
+    if (!emailRegex.test(form.email.trim())) {
+      setError("Please enter a valid email address.");
       return;
     }
     setIsLoading(true);
     try {
       const res = await loginUser({
-        email: form.email,
+        email: form.email.trim(),
         password: form.password
       });
 

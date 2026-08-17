@@ -79,6 +79,10 @@ export default function CreateJob() {
       alert("Job title and description are required.");
       return;
     }
+    if (!formData.deadline) {
+      alert("Application deadline is required.");
+      return;
+    }
     if (forbidden.test(formData.title) || forbidden.test(formData.description)) {
       alert("Invalid characters in title/description.");
       return;
