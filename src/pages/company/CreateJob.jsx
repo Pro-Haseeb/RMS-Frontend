@@ -92,7 +92,7 @@ export default function CreateJob() {
         skills: formData.skills.join(","),
         category: formData.category,
         experienceLevel: formData.experienceLevel
-          ? `${formData.experienceLevel} years`
+          ? String(formData.experienceLevel).trim()
           : undefined,
         location: formData.location.trim() || undefined,
         salary: formData.salary.trim() || undefined,
