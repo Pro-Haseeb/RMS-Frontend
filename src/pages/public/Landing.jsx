@@ -151,7 +151,7 @@ export default function Home() {
                     animation: "slideUp 0.4s ease"
                   }}
                 >
-                  <Typography variant="h6" fontWeight="bold" mb={1}>
+                  <Typography variant="h6"  fontWeight="bold" sx={{ color: "#fff" }} mb={1}>
                     Browse Jobs
                   </Typography>
 

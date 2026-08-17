@@ -81,12 +81,18 @@ export default function AuthPage() {
   };
 
   const handleSignup = async () => {
+    const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#\$%\^&\*()_+\-=[\]{};':"\\|,.<>/?]).{8,}$/;
+
     if (!form.name || !form.email || !form.password || !form.confirm) {
       setError("Please fill all fields.");
       return;
     }
     if (form.password !== form.confirm) {
       setError("Passwords do not match.");
+      return;
+    }
+    if (!strongPasswordRegex.test(form.password)) {
+      setError("Password must be at least 8 chars and include upper, lower, number and symbol.");
       return;
     }
     setIsLoading(true);

@@ -46,6 +46,17 @@ export default function RequestDemo() {
   const handleReqeustDemo = async () => {
     try {
       // Map form field names to what the backend expects
+      // client-side sanitization
+      const forbidden = /[<>${}]/;
+      if (!form.company || !form.email) {
+        alert("Company name and work email are required");
+        return;
+      }
+      if (forbidden.test(form.company) || forbidden.test(form.website) || forbidden.test(form.email)) {
+        alert("Invalid characters in form fields");
+        return;
+      }
+
       const payload = {
         companyName: form.company,
         website: form.website,

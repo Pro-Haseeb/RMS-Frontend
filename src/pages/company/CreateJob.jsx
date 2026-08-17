@@ -73,8 +73,14 @@ export default function CreateJob() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    // Basic client-side validation & sanitization
+    const forbidden = /[<>${}]/;
     if (!formData.title.trim() || !formData.description.trim()) {
       alert("Job title and description are required.");
+      return;
+    }
+    if (forbidden.test(formData.title) || forbidden.test(formData.description)) {
+      alert("Invalid characters in title/description.");
       return;
     }
 
